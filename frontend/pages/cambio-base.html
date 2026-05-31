@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cambio de Base · Simulación Numérica</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="app-wrapper">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-icon"><i class="fas fa-wave-square"></i></div>
+        <div><div class="logo-text">Sim. Numérica</div></div>
+      </div>
+      <div class="sidebar-subtitle">// Plataforma de Métodos</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navegación</div>
+      <a href="../index.html" class="nav-item"><span class="nav-icon"><i class="fas fa-house"></i></span>Inicio</a>
+      <div class="nav-section-label">Métodos Numéricos</div>
+      <a href="taylor.html" class="nav-item"><span class="nav-icon"><i class="fas fa-sigma"></i></span>Polinomios de Taylor<span class="nav-badge">01</span></a>
+      <a href="cambio-base.html" class="nav-item active"><span class="nav-icon"><i class="fas fa-code"></i></span>Cambio de Base<span class="nav-badge">02</span></a>
+      <a href="biseccion.html" class="nav-item"><span class="nav-icon"><i class="fas fa-divide"></i></span>Bisección<span class="nav-badge">03</span></a>
+      <a href="newton.html" class="nav-item"><span class="nav-icon"><i class="fas fa-chart-line"></i></span>Newton-Raphson<span class="nav-badge">04</span></a>
+      <a href="newton-sistemas.html" class="nav-item"><span class="nav-icon"><i class="fas fa-table-cells"></i></span>Newton Sistemas<span class="nav-badge">05</span></a>
+      <a href="lagrange.html" class="nav-item"><span class="nav-icon"><i class="fas fa-bezier-curve"></i></span>Lagrange<span class="nav-badge">06</span></a>
+      <a href="diferencias-divididas.html" class="nav-item"><span class="nav-icon"><i class="fas fa-table"></i></span>Dif. Divididas<span class="nav-badge">07</span></a>
+      <a href="minimos-cuadrados.html" class="nav-item"><span class="nav-icon"><i class="fas fa-scatter-chart"></i></span>Mínimos Cuadrados<span class="nav-badge">08</span></a>
+    </nav>
+    <div class="sidebar-footer">v1.0.0 · Simulación Numérica</div>
+  </aside>
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        <div class="topbar-breadcrumb">
+          <span>SimNum</span><span class="separator">/</span>
+          <span>Métodos</span><span class="separator">/</span>
+          <span class="current">Cambio de Base</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="topbar-tag"># 02 · Sistemas</span>
+      </div>
+    </header>
+
+    <main class="page-body">
+
+      <div class="method-hero">
+        <div class="method-hero-left">
+          <div class="method-hero-icon icon-blue" style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">
+            <i class="fas fa-code"></i>
+          </div>
+          <div class="method-number">Método 02</div>
+          <h1 class="method-title">Cambio de Base<br>Numérica</h1>
+          <p class="method-description">
+            Algoritmo de divisiones y multiplicaciones sucesivas para representar un número decimal
+            en cualquier base posicional b ≥ 2, con demostración basada en el Teorema Fundamental de la Numeración.
+          </p>
+        </div>
+        <div class="method-meta">
+          <span class="meta-chip"><i class="fas fa-tag"></i> Sistemas Posicionales</span>
+          <span class="meta-chip"><i class="fas fa-calculator"></i> Divisiones Sucesivas</span>
+        </div>
+      </div>
+
+      <!-- TEORÍA -->
+      <div class="content-section">
+        <div class="content-section-header">
+          <div class="section-icon"><i class="fas fa-book-open"></i></div>
+          <h2>Fundamentos Teóricos</h2>
+        </div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE INSERTARÁ LA TEORÍA COMPLETA DEL CAMBIO DE BASE -->
+          <div class="theory-text">
+
+            <h3>1. Introducción a los Sistemas de Numeración</h3>
+            <p>Un sistema de numeración es un conjunto de símbolos y reglas que permiten construir todos los números válidos. Todo sistema de numeración moderno es <strong>posicional</strong>: el valor de un dígito depende no solo de su símbolo, sino de la posición que ocupa dentro del número.</p>
+            <p>Históricamente se adoptó el sistema decimal (base 10) por la anatomía humana. En computación predomina el sistema binario (base 2) por la naturaleza biestable de los circuitos lógicos.</p>
+
+            <h3>2. Teorema Fundamental de la Numeración</h3>
+            <p>Cualquier número real positivo N puede expresarse de forma única en un sistema posicional de base b (con b ≥ 2 entero) mediante una sucesión polinómica de potencias de la base.</p>
+
+            <div class="formula-box">
+              <div class="formula-label">Representación en base b</div>
+              <div class="formula-content">N = (dₙ dₙ₋₁ ... d₁ d₀ . d₋₁ d₋₂ ... d₋ₘ)_b,  donde 0 ≤ dᵢ &lt; b</div>
+            </div>
+
+            <div class="formula-box">
+              <div class="formula-label">Valor decimal equivalente — Suma ponderada</div>
+              <div class="formula-content">N₁₀ = Σ dᵢ · bⁱ,  i = −m, ..., n</div>
+            </div>
+
+            <h3>3. Algoritmo para la Parte Entera (Divisiones Sucesivas)</h3>
+            <p>Para convertir la parte entera de un número decimal a la base b, se aplica repetidamente el algoritmo de la división de Euclides. Cada residuo obtenido es un dígito de la representación en base b, leídos en orden inverso.</p>
+
+            <div class="formula-box">
+              <div class="formula-label">Paso general del algoritmo (paso k)</div>
+              <div class="formula-content">Q_(k-1) = b · Qₖ + R_(k-1)  →  R_(k-1) = d_(k-1)</div>
+            </div>
+
+            <div class="algo-steps">
+              <div class="algo-step"><p>Dividir N entre la base b. El residuo R₀ es el dígito menos significativo d₀.</p></div>
+              <div class="algo-step"><p>Tomar el cociente Q₁ y volver a dividir entre b. El nuevo residuo R₁ = d₁.</p></div>
+              <div class="algo-step"><p>Repetir hasta que el cociente sea cero.</p></div>
+              <div class="algo-step"><p>Leer los residuos en orden inverso: el último es el dígito más significativo.</p></div>
+            </div>
+
+            <h3>4. Algoritmo para la Parte Fraccionaria (Multiplicaciones Sucesivas)</h3>
+            <p>Para un número estrictamente fraccionario F (0 &lt; F &lt; 1), se multiplica repetidamente por la base b. La parte entera de cada producto es el siguiente dígito fraccionario.</p>
+
+            <div class="formula-box">
+              <div class="formula-label">Paso general (posición fraccionaria k)</div>
+              <div class="formula-content">F_(k-1) · b = d_(-k) + Fₖ  →  d_(-k) = Parte entera de (F_(k-1) · b)</div>
+            </div>
+
+            <div class="algo-steps">
+              <div class="algo-step"><p>Multiplicar la parte fraccionaria F por la base b.</p></div>
+              <div class="algo-step"><p>La parte entera del resultado es el dígito d₋₁.</p></div>
+              <div class="algo-step"><p>Tomar la parte fraccionaria sobrante y repetir el proceso.</p></div>
+              <div class="algo-step"><p>Terminar cuando la fracción sea cero (exacto) o al detectar un ciclo (periódico).</p></div>
+            </div>
+
+            <h3>5. Ejemplo: Conversión de 22.625₁₀ a Base 2</h3>
+            <p><strong>Parte entera (22):</strong> 22÷2=11 R<strong>0</strong> → 11÷2=5 R<strong>1</strong> → 5÷2=2 R<strong>1</strong> → 2÷2=1 R<strong>0</strong> → 1÷2=0 R<strong>1</strong>. Resultado: <strong>10110₂</strong></p>
+            <p><strong>Parte fraccionaria (0.625):</strong> 0.625×2=<strong>1</strong>.250 → 0.250×2=<strong>0</strong>.500 → 0.500×2=<strong>1</strong>.000. Resultado: <strong>0.101₂</strong></p>
+
+            <div class="formula-box">
+              <div class="formula-label">Resultado final</div>
+              <div class="formula-content">22.625₁₀ = 10110.101₂</div>
+            </div>
+
+            <h3>6. Limitaciones — Representaciones Periódicas</h3>
+            <p>El algoritmo fraccionario no siempre es finito. Una fracción exacta en base 10 puede transformarse en una serie infinita periódica en otra base si los denominadores no comparten factores primos con la base destino. Por ejemplo, 22.625₁₀ en base 3 produce 211.<strong>12̄</strong>₃ (periódico).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF -->
+      <div class="pdf-card">
+        <div class="pdf-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="pdf-info">
+          <h3>Material de Apoyo</h3>
+          <p>Documento con demostración formal del Teorema Fundamental, verificación por series geométricas y ejercicios.</p>
+        </div>
+        <a href="../assets/pdf/cambio-base.pdf" class="btn-download" download>
+          <i class="fas fa-download"></i> Descargar PDF
+        </a>
+      </div>
+
+      <!-- SIMULADOR -->
+      <div class="content-section">
+        <div class="content-section-header">
+          <div class="section-icon"><i class="fas fa-flask"></i></div>
+          <h2>Simulador — Cambio de Base</h2>
+        </div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE IMPLEMENTARÁ LA LÓGICA DEL SIMULADOR EN JAVASCRIPT -->
+          <div class="simulator-grid">
+            <div>
+              <div class="form-group">
+                <label class="form-label">Número decimal a convertir</label>
+                <input type="text" class="form-input" placeholder="Ej: 22.625" id="cbNumero">
+                <div class="form-hint">Puede incluir parte fraccionaria</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Base de origen</label>
+                <select class="form-select">
+                  <option value="10">Base 10 — Decimal</option>
+                  <option value="2">Base 2 — Binario</option>
+                  <option value="8">Base 8 — Octal</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label class="form-label">Base destino</label>
+                <select class="form-select" id="cbBase">
+                  <option value="2">Base 2 — Binario</option>
+                  <option value="3">Base 3 — Ternario</option>
+                  <option value="4">Base 4 — Cuaternario</option>
+                  <option value="5">Base 5 — Quinario</option>
+                  <option value="6">Base 6 — Senario</option>
+                  <option value="7">Base 7 — Septenario</option>
+                  <option value="8">Base 8 — Octal</option>
+                  <option value="9">Base 9 — Nonario</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Decimales máximos (parte fraccionaria)</label>
+                <input type="number" class="form-input" value="8" min="1" max="32">
+                <div class="form-hint">Para detectar ciclos periódicos</div>
+              </div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="alert('Lógica pendiente de implementación JS')">
+              <i class="fas fa-right-left"></i> Convertir
+            </button>
+            <button class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTADOS -->
+      <div class="content-section">
+        <div class="content-section-header">
+          <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+          <h2>Resultados</h2>
+        </div>
+        <div class="content-section-body" style="padding:0;">
+          <div class="results-panel" style="border:none;border-radius:0;">
+            <div class="results-header">
+              <div class="results-dot"></div>
+              SALIDA · CONVERSIÓN DE BASE
+            </div>
+            <div class="results-body">
+              <div class="results-placeholder">
+                <div class="placeholder-icon"><i class="fas fa-code"></i></div>
+                <!-- AQUÍ SE MOSTRARÁN LOS PASOS DE LA CONVERSIÓN Y EL RESULTADO FINAL -->
+                <p>Los pasos de conversión y el resultado aparecerán aquí<br>cuando se implemente la lógica del algoritmo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+    <footer class="page-footer">
+      <span class="footer-text">Simulación Numérica · Método 02 — Cambio de Base</span>
+      <div class="footer-links">
+        <a href="taylor.html"><i class="fas fa-arrow-left"></i> Anterior</a>
+        <a href="biseccion.html">Siguiente <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  hamburger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
+  overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    document.getElementById('progressBar').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  });
+</script>
+</body>
+</html>

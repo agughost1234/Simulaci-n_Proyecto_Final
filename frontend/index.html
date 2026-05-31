@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulación Numérica · Plataforma de Métodos</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="app-wrapper">
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-icon"><i class="fas fa-wave-square"></i></div>
+        <div>
+          <div class="logo-text">Sim. Numérica</div>
+        </div>
+      </div>
+      <div class="sidebar-subtitle">// Plataforma de Métodos</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navegación</div>
+      <a href="index.html" class="nav-item active">
+        <span class="nav-icon"><i class="fas fa-house"></i></span>
+        Inicio
+      </a>
+
+      <div class="nav-section-label">Métodos Numéricos</div>
+
+      <a href="pages/taylor.html" class="nav-item">
+        <span class="nav-icon"><i class="fas fa-sigma"></i></span>
+        Polinomios de Taylor
+        <span class="nav-badge">01</span>
+      </a>
+      <a href="pages/cambio-base.html" class="nav-item">
+        <span class="nav-icon"><i class="fas fa-code"></i></span>
+        Cambio de Base
+        <span class="nav-badge">02</span>
+      </a>
+      <a href="pages/biseccion.html" class="nav-item">
+        <span class="nav-icon"><i class="fas fa-divide"></i></span>
+        Bisección
+        <span class="nav-badge">03</span>
+      </a>
+      <a href="pages/newton.html" class="nav-item">
+        <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
+        Newton-Raphson
+        <span class="nav-badge">04</span>
+      </a>
+      <a href="pages/newton-sistemas.html" class="nav-item">
+        <span class="nav-icon"><i class="fas fa-table-cells"></i></span>
+        Newton Sistemas
+        <span class="nav-badge">05</span>
+      </a>
+      <a href="pages/lagrange.html" class="nav-item">
+        <span class="nav-icon"><i class="fas fa-bezier-curve"></i></span>
+        Lagrange
+        <span class="nav-badge">06</span>
+      </a>
+      <a href="pages/diferencias-divididas.html" class="nav-item">
+        <span class="nav-icon"><i class="fas fa-table"></i></span>
+        Dif. Divididas
+        <span class="nav-badge">07</span>
+      </a>
+      <a href="pages/minimos-cuadrados.html" class="nav-item">
+        <span class="nav-icon"><i class="fas fa-scatter-chart"></i></span>
+        Mínimos Cuadrados
+        <span class="nav-badge">08</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      v1.0.0 · Simulación Numérica
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <!-- ═══════════════ MAIN ═══════════════ -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="hamburger" id="hamburger" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="topbar-breadcrumb">
+          <span>SimNum</span>
+          <span class="separator">/</span>
+          <span class="current">Inicio</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="topbar-tag"><i class="fas fa-circle" style="color:#34d399;font-size:.5rem;"></i> &nbsp;8 métodos</span>
+      </div>
+    </header>
+
+    <main class="page-body">
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-eyebrow">Métodos Numéricos</div>
+        <h1 class="hero-title">
+          Plataforma de<br>
+          <span class="gradient-text">Simulación Numérica</span>
+        </h1>
+        <p class="hero-description">
+          Explora los fundamentos teóricos y algoritmos de los principales métodos numéricos. 
+          Cada módulo incluye su base matemática y un simulador interactivo para experimentar.
+        </p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-value">8</div>
+            <div class="stat-label">// métodos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4</div>
+            <div class="stat-label">// categorías</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">∞</div>
+            <div class="stat-label">// iteraciones</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Info banner -->
+      <div class="info-banner">
+        <div class="info-banner-icon"><i class="fas fa-flask"></i></div>
+        <div class="info-banner-text">
+          <h3>Plataforma en desarrollo activo</h3>
+          <p>La interfaz gráfica está lista. La lógica matemática en JavaScript se incorporará próximamente en cada simulador.</p>
+        </div>
+      </div>
+
+      <!-- Methods grid -->
+      <div class="section-header">
+        <h2 class="section-title">Métodos disponibles</h2>
+        <div class="section-line"></div>
+        <span class="section-count">8 módulos</span>
+      </div>
+
+      <div class="methods-grid">
+
+        <!-- 01 Taylor -->
+        <a href="pages/taylor.html" class="method-card">
+          <div class="card-header">
+            <div class="card-icon icon-cyan"><i class="fas fa-sigma"></i></div>
+            <span class="card-number"># 01</span>
+          </div>
+          <div class="card-body">
+            <div class="card-category" style="color:var(--accent);">Series · Aproximación</div>
+            <h3 class="card-title">Polinomios de Taylor y el Resto</h3>
+            <p class="card-desc">Evaluación de sumatorias y derivadas sucesivas para aproximar funciones mediante polinomios de grado n.</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag tag-cyan">Sumatoria</span>
+              <span class="tag tag-blue">Derivadas</span>
+            </div>
+            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+          </div>
+        </a>
+
+        <!-- 02 Cambio de base -->
+        <a href="pages/cambio-base.html" class="method-card">
+          <div class="card-header">
+            <div class="card-icon icon-blue"><i class="fas fa-code"></i></div>
+            <span class="card-number"># 02</span>
+          </div>
+          <div class="card-body">
+            <div class="card-category" style="color:#60a5fa;">Sistemas · Computación</div>
+            <h3 class="card-title">Cambio de Base Numérica</h3>
+            <p class="card-desc">Algoritmo de divisiones sucesivas y residuos para convertir números entre distintas bases posicionales.</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag tag-blue">Binario</span>
+              <span class="tag tag-blue">Base n</span>
+            </div>
+            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+          </div>
+        </a>
+
+        <!-- 03 Bisección -->
+        <a href="pages/biseccion.html" class="method-card">
+          <div class="card-header">
+            <div class="card-icon icon-purple"><i class="fas fa-divide"></i></div>
+            <span class="card-number"># 03</span>
+          </div>
+          <div class="card-body">
+            <div class="card-category" style="color:#a78bfa;">Raíces · Cerradas</div>
+            <h3 class="card-title">Método de Bisección</h3>
+            <p class="card-desc">Búsqueda de raíces en métodos cerrados. Requiere un intervalo [a, b] donde existe un cambio de signo.</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag tag-purple">Intervalo</span>
+              <span class="tag tag-purple">Convergente</span>
+            </div>
+            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+          </div>
+        </a>
+
+        <!-- 04 Newton-Raphson -->
+        <a href="pages/newton.html" class="method-card">
+          <div class="card-header">
+            <div class="card-icon icon-green"><i class="fas fa-chart-line"></i></div>
+            <span class="card-number"># 04</span>
+          </div>
+          <div class="card-body">
+            <div class="card-category" style="color:#34d399;">Raíces · Abiertas</div>
+            <h3 class="card-title">Método de Newton-Raphson</h3>
+            <p class="card-desc">Búsqueda de raíces en métodos abiertos usando la tangente a la curva. Convergencia cuadrática.</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag tag-green">Tangente</span>
+              <span class="tag tag-green">1 variable</span>
+            </div>
+            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+          </div>
+        </a>
+
+        <!-- 05 Newton Sistemas -->
+        <a href="pages/newton-sistemas.html" class="method-card">
+          <div class="card-header">
+            <div class="card-icon icon-orange"><i class="fas fa-table-cells"></i></div>
+            <span class="card-number"># 05</span>
+          </div>
+          <div class="card-body">
+            <div class="card-category" style="color:#fb923c;">Sistemas · No lineales</div>
+            <h3 class="card-title">Newton para Sistemas No Lineales</h3>
+            <p class="card-desc">Extensión del método de Newton a múltiples variables usando la matriz Jacobiana del sistema.</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag tag-cyan">Jacobiano</span>
+              <span class="tag tag-blue">Multivariable</span>
+            </div>
+            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+          </div>
+        </a>
+
+        <!-- 06 Lagrange -->
+        <a href="pages/lagrange.html" class="method-card">
+          <div class="card-header">
+            <div class="card-icon icon-pink"><i class="fas fa-bezier-curve"></i></div>
+            <span class="card-number"># 06</span>
+          </div>
+          <div class="card-body">
+            <div class="card-category" style="color:#f472b6;">Interpolación · Polinomial</div>
+            <h3 class="card-title">Polinomio Interpolante de Lagrange</h3>
+            <p class="card-desc">Construcción de un polinomio único de grado n que pasa exactamente por n+1 puntos dados.</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag tag-purple">Interpolación</span>
+              <span class="tag tag-purple">Polinomio</span>
+            </div>
+            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+          </div>
+        </a>
+
+        <!-- 07 Diferencias Divididas -->
+        <a href="pages/diferencias-divididas.html" class="method-card">
+          <div class="card-header">
+            <div class="card-icon icon-teal"><i class="fas fa-table"></i></div>
+            <span class="card-number"># 07</span>
+          </div>
+          <div class="card-body">
+            <div class="card-category" style="color:#2dd4bf;">Interpolación · Tabla</div>
+            <h3 class="card-title">Diferencias Divididas de Newton</h3>
+            <p class="card-desc">Método de interpolación basado en tabla de diferencias divididas. Permite agregar puntos incrementalmente.</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag tag-cyan">Tabla</span>
+              <span class="tag tag-cyan">Incremental</span>
+            </div>
+            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+          </div>
+        </a>
+
+        <!-- 08 Mínimos Cuadrados -->
+        <a href="pages/minimos-cuadrados.html" class="method-card">
+          <div class="card-header">
+            <div class="card-icon icon-indigo"><i class="fas fa-scatter-chart"></i></div>
+            <span class="card-number"># 08</span>
+          </div>
+          <div class="card-body">
+            <div class="card-category" style="color:#818cf8;">Ajuste · Regresión</div>
+            <h3 class="card-title">Método de Mínimos Cuadrados</h3>
+            <p class="card-desc">Ajuste de curvas minimizando la suma de los cuadrados de los residuos entre los datos y el modelo.</p>
+          </div>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="tag tag-blue">Regresión</span>
+              <span class="tag tag-blue">Ajuste</span>
+            </div>
+            <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+          </div>
+        </a>
+
+      </div><!-- /methods-grid -->
+
+    </main>
+
+    <footer class="page-footer">
+      <span class="footer-text">© 2025 · Simulación Numérica · Métodos Numéricos</span>
+      <div class="footer-links">
+        <a href="index.html"><i class="fas fa-house"></i> Inicio</a>
+        <a href="#"><i class="fas fa-book"></i> Teoría</a>
+      </div>
+    </footer>
+  </div>
+
+</div>
+
+<script>
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const sidebar   = document.getElementById('sidebar');
+  const overlay   = document.getElementById('overlay');
+  hamburger.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('visible');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('visible');
+  });
+
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const el = document.getElementById('progressBar');
+    const h  = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    el.style.width = pct + '%';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polinomios de Taylor · Simulación Numérica</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="app-wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-icon"><i class="fas fa-wave-square"></i></div>
+        <div><div class="logo-text">Sim. Numérica</div></div>
+      </div>
+      <div class="sidebar-subtitle">// Plataforma de Métodos</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navegación</div>
+      <a href="../index.html" class="nav-item"><span class="nav-icon"><i class="fas fa-house"></i></span>Inicio</a>
+      <div class="nav-section-label">Métodos Numéricos</div>
+      <a href="taylor.html" class="nav-item active"><span class="nav-icon"><i class="fas fa-sigma"></i></span>Polinomios de Taylor<span class="nav-badge">01</span></a>
+      <a href="cambio-base.html" class="nav-item"><span class="nav-icon"><i class="fas fa-code"></i></span>Cambio de Base<span class="nav-badge">02</span></a>
+      <a href="biseccion.html" class="nav-item"><span class="nav-icon"><i class="fas fa-divide"></i></span>Bisección<span class="nav-badge">03</span></a>
+      <a href="newton.html" class="nav-item"><span class="nav-icon"><i class="fas fa-chart-line"></i></span>Newton-Raphson<span class="nav-badge">04</span></a>
+      <a href="newton-sistemas.html" class="nav-item"><span class="nav-icon"><i class="fas fa-table-cells"></i></span>Newton Sistemas<span class="nav-badge">05</span></a>
+      <a href="lagrange.html" class="nav-item"><span class="nav-icon"><i class="fas fa-bezier-curve"></i></span>Lagrange<span class="nav-badge">06</span></a>
+      <a href="diferencias-divididas.html" class="nav-item"><span class="nav-icon"><i class="fas fa-table"></i></span>Dif. Divididas<span class="nav-badge">07</span></a>
+      <a href="minimos-cuadrados.html" class="nav-item"><span class="nav-icon"><i class="fas fa-scatter-chart"></i></span>Mínimos Cuadrados<span class="nav-badge">08</span></a>
+    </nav>
+    <div class="sidebar-footer">v1.0.0 · Simulación Numérica</div>
+  </aside>
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        <div class="topbar-breadcrumb">
+          <span>SimNum</span><span class="separator">/</span>
+          <span>Métodos</span><span class="separator">/</span>
+          <span class="current">Taylor</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span class="topbar-tag"># 01 · Series</span>
+      </div>
+    </header>
+
+    <main class="page-body">
+
+      <!-- Method Hero -->
+      <div class="method-hero">
+        <div class="method-hero-left">
+          <div class="method-hero-icon icon-cyan" style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;">
+            <i class="fas fa-sigma"></i>
+          </div>
+          <div class="method-number">Método 01</div>
+          <h1 class="method-title">Polinomios de Taylor<br>y el Resto</h1>
+          <p class="method-description">
+            Aproximación de funciones diferenciables mediante una suma finita de derivadas evaluadas en un punto,
+            con estimación del error mediante el término del resto.
+          </p>
+        </div>
+        <div class="method-meta">
+          <span class="meta-chip"><i class="fas fa-tag"></i> Series · Aproximación</span>
+          <span class="meta-chip"><i class="fas fa-calculator"></i> Sumatorias y Derivadas</span>
+        </div>
+      </div>
+
+      <!-- TEORÍA -->
+      <div class="content-section">
+        <div class="content-section-header">
+          <div class="section-icon"><i class="fas fa-book-open"></i></div>
+          <h2>Fundamentos Teóricos</h2>
+        </div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE INSERTARÁ LA TEORÍA COMPLETA DEL POLINOMIO DE TAYLOR -->
+          <div class="theory-text">
+            <h3>1. Definición del Polinomio de Taylor</h3>
+            <p>Sea <em>f</em> una función (n+1)-veces diferenciable en un intervalo que contiene al punto <em>a</em>. El polinomio de Taylor de grado <em>n</em> alrededor de <em>a</em> es la mejor aproximación polinómica de grado n a f en la vecindad de ese punto.</p>
+
+            <div class="formula-box">
+              <div class="formula-label">Fórmula General — Polinomio de Taylor de grado n</div>
+              <div class="formula-content">P_n(x) = Σ [f⁽ᵏ⁾(a) / k!] · (x − a)ᵏ,  k = 0, 1, ..., n</div>
+            </div>
+
+            <h3>2. Serie de Maclaurin</h3>
+            <p>Cuando el punto de expansión es <em>a = 0</em>, el polinomio de Taylor se denomina <strong>Serie de Maclaurin</strong>. Es la forma más común utilizada en análisis numérico para funciones elementales como e<sup>x</sup>, sin(x) y cos(x).</p>
+
+            <div class="formula-box">
+              <div class="formula-label">Caso particular: Serie de Maclaurin (a = 0)</div>
+              <div class="formula-content">P_n(x) = f(0) + f'(0)·x + f''(0)·x²/2! + f'''(0)·x³/3! + ...</div>
+            </div>
+
+            <h3>3. El Resto de Taylor (Término de Error)</h3>
+            <p>El polinomio de Taylor no es la función exacta; existe un error llamado <strong>Resto de Lagrange</strong>. Este término cuantifica la diferencia entre la función real y su aproximación polinómica.</p>
+
+            <div class="formula-box">
+              <div class="formula-label">Resto de Lagrange</div>
+              <div class="formula-content">Rₙ(x) = f⁽ⁿ⁺¹⁾(ξ) / (n+1)! · (x − a)ⁿ⁺¹,  ξ ∈ (a, x)</div>
+            </div>
+
+            <h3>4. Algoritmo de Evaluación</h3>
+            <div class="algo-steps">
+              <div class="algo-step"><p>Seleccionar la función f(x), el punto de expansión <em>a</em> y el grado n.</p></div>
+              <div class="algo-step"><p>Calcular las derivadas sucesivas f'(a), f''(a), ..., f⁽ⁿ⁾(a).</p></div>
+              <div class="algo-step"><p>Dividir cada derivada entre el factorial correspondiente: f⁽ᵏ⁾(a) / k!</p></div>
+              <div class="algo-step"><p>Multiplicar cada coeficiente por la potencia (x − a)ᵏ.</p></div>
+              <div class="algo-step"><p>Sumar todos los términos para obtener P_n(x).</p></div>
+              <div class="algo-step"><p>Estimar el error máximo con el Resto de Lagrange.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF -->
+      <div class="pdf-card">
+        <div class="pdf-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="pdf-info">
+          <h3>Material de Apoyo</h3>
+          <p>Documento teórico completo con demostraciones, ejemplos resueltos y ejercicios propuestos.</p>
+        </div>
+        <a href="../assets/pdf/taylor.pdf" class="btn-download" download>
+          <i class="fas fa-download"></i> Descargar PDF
+        </a>
+      </div>
+
+      <!-- SIMULADOR -->
+      <div class="content-section">
+        <div class="content-section-header">
+          <div class="section-icon"><i class="fas fa-flask"></i></div>
+          <h2>Simulador — Polinomio de Taylor</h2>
+        </div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE IMPLEMENTARÁ LA LÓGICA DEL SIMULADOR EN JAVASCRIPT -->
+          <div class="simulator-grid">
+            <div>
+              <div class="form-group">
+                <label class="form-label">Función f(x)</label>
+                <input type="text" class="form-input" placeholder="Ej: exp(x), sin(x), cos(x)" id="taylorFx">
+                <div class="form-hint">Usa notación matemática estándar</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Punto de expansión (a)</label>
+                <input type="number" class="form-input" placeholder="Ej: 0" id="taylorA" value="0">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Grado del polinomio (n)</label>
+                <input type="number" class="form-input" placeholder="Ej: 5" id="taylorN" min="1" max="20" value="5">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Punto de evaluación (x)</label>
+                <input type="number" class="form-input" placeholder="Ej: 1.0" id="taylorX">
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label class="form-label">Tipo de serie</label>
+                <select class="form-select" id="taylorTipo">
+                  <option value="taylor">Taylor (a ≠ 0)</option>
+                  <option value="maclaurin">Maclaurin (a = 0)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mostrar términos hasta</label>
+                <input type="number" class="form-input" placeholder="Número de términos" value="10" min="1" max="20">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tolerancia del error</label>
+                <input type="number" class="form-input" placeholder="Ej: 1e-6" value="0.000001" step="any">
+              </div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="alert('Lógica pendiente de implementación JS')">
+              <i class="fas fa-play"></i> Calcular Polinomio
+            </button>
+            <button class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULTADOS -->
+      <div class="content-section">
+        <div class="content-section-header">
+          <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+          <h2>Resultados</h2>
+        </div>
+        <div class="content-section-body" style="padding:0;">
+          <div class="results-panel" style="border:none;border-radius:0;">
+            <div class="results-header">
+              <div class="results-dot"></div>
+              SALIDA · POLINOMIO DE TAYLOR
+            </div>
+            <div class="results-body">
+              <div class="results-placeholder">
+                <div class="placeholder-icon"><i class="fas fa-wave-square"></i></div>
+                <!-- AQUÍ SE MOSTRARÁN LOS RESULTADOS DEL ALGORITMO -->
+                <p>Los resultados aparecerán aquí cuando se implemente<br>la lógica del algoritmo en JavaScript.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+    <footer class="page-footer">
+      <span class="footer-text">Simulación Numérica · Método 01 — Taylor</span>
+      <div class="footer-links">
+        <a href="../index.html"><i class="fas fa-house"></i> Inicio</a>
+        <a href="cambio-base.html">Siguiente <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  hamburger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
+  overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    document.getElementById('progressBar').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  });
+</script>
+</body>
+</html>

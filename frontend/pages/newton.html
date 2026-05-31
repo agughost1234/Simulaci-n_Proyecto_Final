@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newton-Raphson · Simulación Numérica</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><div class="logo-icon"><i class="fas fa-wave-square"></i></div><div><div class="logo-text">Sim. Numérica</div></div></div>
+      <div class="sidebar-subtitle">// Plataforma de Métodos</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navegación</div>
+      <a href="../index.html" class="nav-item"><span class="nav-icon"><i class="fas fa-house"></i></span>Inicio</a>
+      <div class="nav-section-label">Métodos Numéricos</div>
+      <a href="taylor.html" class="nav-item"><span class="nav-icon"><i class="fas fa-sigma"></i></span>Polinomios de Taylor<span class="nav-badge">01</span></a>
+      <a href="cambio-base.html" class="nav-item"><span class="nav-icon"><i class="fas fa-code"></i></span>Cambio de Base<span class="nav-badge">02</span></a>
+      <a href="biseccion.html" class="nav-item"><span class="nav-icon"><i class="fas fa-divide"></i></span>Bisección<span class="nav-badge">03</span></a>
+      <a href="newton.html" class="nav-item active"><span class="nav-icon"><i class="fas fa-chart-line"></i></span>Newton-Raphson<span class="nav-badge">04</span></a>
+      <a href="newton-sistemas.html" class="nav-item"><span class="nav-icon"><i class="fas fa-table-cells"></i></span>Newton Sistemas<span class="nav-badge">05</span></a>
+      <a href="lagrange.html" class="nav-item"><span class="nav-icon"><i class="fas fa-bezier-curve"></i></span>Lagrange<span class="nav-badge">06</span></a>
+      <a href="diferencias-divididas.html" class="nav-item"><span class="nav-icon"><i class="fas fa-table"></i></span>Dif. Divididas<span class="nav-badge">07</span></a>
+      <a href="minimos-cuadrados.html" class="nav-item"><span class="nav-icon"><i class="fas fa-scatter-chart"></i></span>Mínimos Cuadrados<span class="nav-badge">08</span></a>
+    </nav>
+    <div class="sidebar-footer">v1.0.0 · Simulación Numérica</div>
+  </aside>
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        <div class="topbar-breadcrumb"><span>SimNum</span><span class="separator">/</span><span>Métodos</span><span class="separator">/</span><span class="current">Newton-Raphson</span></div>
+      </div>
+      <div class="topbar-actions"><span class="topbar-tag"># 04 · Raíces Abiertas</span></div>
+    </header>
+
+    <main class="page-body">
+      <div class="method-hero">
+        <div class="method-hero-left">
+          <div class="method-hero-icon icon-green" style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;"><i class="fas fa-chart-line"></i></div>
+          <div class="method-number">Método 04</div>
+          <h1 class="method-title">Método de<br>Newton-Raphson</h1>
+          <p class="method-description">Método abierto de búsqueda de raíces. Usa la tangente a la curva en el punto actual para estimar la siguiente aproximación. Convergencia cuadrática cuando converge.</p>
+        </div>
+        <div class="method-meta">
+          <span class="meta-chip"><i class="fas fa-tag"></i> Raíces · Método Abierto</span>
+          <span class="meta-chip"><i class="fas fa-bolt"></i> Convergencia cuadrática</span>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-header"><div class="section-icon"><i class="fas fa-book-open"></i></div><h2>Fundamentos Teóricos</h2></div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE INSERTARÁ LA TEORÍA COMPLETA DEL MÉTODO DE NEWTON-RAPHSON -->
+          <div class="theory-text">
+            <h3>1. Interpretación Geométrica</h3>
+            <p>A partir de un punto inicial x₀, se traza la tangente a la curva f(x) en ese punto. La intersección de esa tangente con el eje x define la siguiente aproximación x₁. El proceso se repite iterativamente.</p>
+
+            <h3>2. Deducción de la Fórmula Iterativa</h3>
+            <p>La ecuación de la tangente a f en xₙ es: y − f(xₙ) = f'(xₙ)(x − xₙ). Fijando y = 0 y despejando x se obtiene la fórmula de iteración:</p>
+
+            <div class="formula-box">
+              <div class="formula-label">Fórmula iterativa de Newton-Raphson</div>
+              <div class="formula-content">x_(n+1) = xₙ − f(xₙ) / f'(xₙ)</div>
+            </div>
+
+            <div class="algo-steps">
+              <div class="algo-step"><p>Seleccionar un punto inicial x₀ cercano a la raíz.</p></div>
+              <div class="algo-step"><p>Evaluar f(xₙ) y f'(xₙ). Verificar que f'(xₙ) ≠ 0.</p></div>
+              <div class="algo-step"><p>Calcular la nueva aproximación: x_(n+1) = xₙ − f(xₙ)/f'(xₙ).</p></div>
+              <div class="algo-step"><p>Calcular el error relativo: |x_(n+1) − xₙ| / |x_(n+1)|.</p></div>
+              <div class="algo-step"><p>Si el error &lt; tolerancia, detener. Si no, repetir desde el paso 2 con xₙ = x_(n+1).</p></div>
+            </div>
+
+            <h3>3. Orden de Convergencia</h3>
+            <p>El método de Newton-Raphson tiene convergencia <strong>cuadrática</strong> cuando la raíz es simple, lo que significa que el número de dígitos correctos se duplica en cada iteración.</p>
+
+            <div class="formula-box">
+              <div class="formula-label">Error en la iteración n+1 (raíz simple)</div>
+              <div class="formula-content">eₙ₊₁ ≈ [f''(ξ) / (2·f'(xₙ))] · eₙ²</div>
+            </div>
+
+            <h3>4. Criterios de Paro</h3>
+            <ul>
+              <li><strong>Error absoluto:</strong> |x_(n+1) − xₙ| &lt; ε</li>
+              <li><strong>Error relativo:</strong> |x_(n+1) − xₙ| / |x_(n+1)| &lt; ε</li>
+              <li><strong>Valor de función:</strong> |f(x_(n+1))| &lt; ε</li>
+            </ul>
+
+            <h3>5. Casos de No Convergencia</h3>
+            <ul>
+              <li>Si f'(xₙ) = 0, el método falla (división por cero).</li>
+              <li>Si el punto inicial está muy lejos de la raíz, puede diverger o oscilar.</li>
+              <li>Raíces múltiples reducen el orden de convergencia a lineal.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pdf-card">
+        <div class="pdf-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="pdf-info"><h3>Material de Apoyo</h3><p>Demostración geométrica, análisis de convergencia cuadrática y casos especiales del método de Newton.</p></div>
+        <a href="../assets/pdf/newton.pdf" class="btn-download" download><i class="fas fa-download"></i> Descargar PDF</a>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-header"><div class="section-icon"><i class="fas fa-flask"></i></div><h2>Simulador — Newton-Raphson</h2></div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE IMPLEMENTARÁ LA LÓGICA DEL SIMULADOR EN JAVASCRIPT -->
+          <div class="simulator-grid">
+            <div>
+              <div class="form-group">
+                <label class="form-label">Función f(x)</label>
+                <input type="text" class="form-input" placeholder="Ej: x^3 - 2*x - 5" id="nrFx">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Derivada f'(x)</label>
+                <input type="text" class="form-input" placeholder="Ej: 3*x^2 - 2" id="nrDfx">
+                <div class="form-hint">Ingresar manualmente la derivada analítica</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Punto inicial (x₀)</label>
+                <input type="number" class="form-input" placeholder="Ej: 2" id="nrX0" step="any">
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label class="form-label">Tolerancia (ε)</label>
+                <input type="number" class="form-input" value="0.0001" step="any" id="nrTol">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Máximo de iteraciones</label>
+                <input type="number" class="form-input" value="50" min="1" max="500" id="nrMaxIter">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tipo de error a evaluar</label>
+                <select class="form-select">
+                  <option value="relativo">Error relativo</option>
+                  <option value="absoluto">Error absoluto</option>
+                  <option value="funcion">|f(x)|</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="alert('Lógica pendiente de implementación JS')"><i class="fas fa-play"></i> Calcular</button>
+            <button class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-header"><div class="section-icon"><i class="fas fa-chart-bar"></i></div><h2>Resultados</h2></div>
+        <div class="content-section-body" style="padding:0;">
+          <div class="results-panel" style="border:none;border-radius:0;">
+            <div class="results-header"><div class="results-dot"></div>SALIDA · NEWTON-RAPHSON</div>
+            <div class="results-body">
+              <div class="results-placeholder">
+                <div class="placeholder-icon"><i class="fas fa-chart-line"></i></div>
+                <!-- AQUÍ SE MOSTRARÁ LA TABLA DE ITERACIONES, LA RAÍZ Y LA CURVA DE CONVERGENCIA -->
+                <p>La tabla de iteraciones y la raíz aproximada aparecerán aquí<br>cuando se implemente la lógica del algoritmo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="page-footer">
+      <span class="footer-text">Simulación Numérica · Método 04 — Newton-Raphson</span>
+      <div class="footer-links">
+        <a href="biseccion.html"><i class="fas fa-arrow-left"></i> Anterior</a>
+        <a href="newton-sistemas.html">Siguiente <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  hamburger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
+  overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    document.getElementById('progressBar').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  });
+</script>
+</body>
+</html>

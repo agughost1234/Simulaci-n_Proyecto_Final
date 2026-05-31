@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newton Sistemas · Simulación Numérica</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><div class="logo-icon"><i class="fas fa-wave-square"></i></div><div><div class="logo-text">Sim. Numérica</div></div></div>
+      <div class="sidebar-subtitle">// Plataforma de Métodos</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navegación</div>
+      <a href="../index.html" class="nav-item"><span class="nav-icon"><i class="fas fa-house"></i></span>Inicio</a>
+      <div class="nav-section-label">Métodos Numéricos</div>
+      <a href="taylor.html" class="nav-item"><span class="nav-icon"><i class="fas fa-sigma"></i></span>Polinomios de Taylor<span class="nav-badge">01</span></a>
+      <a href="cambio-base.html" class="nav-item"><span class="nav-icon"><i class="fas fa-code"></i></span>Cambio de Base<span class="nav-badge">02</span></a>
+      <a href="biseccion.html" class="nav-item"><span class="nav-icon"><i class="fas fa-divide"></i></span>Bisección<span class="nav-badge">03</span></a>
+      <a href="newton.html" class="nav-item"><span class="nav-icon"><i class="fas fa-chart-line"></i></span>Newton-Raphson<span class="nav-badge">04</span></a>
+      <a href="newton-sistemas.html" class="nav-item active"><span class="nav-icon"><i class="fas fa-table-cells"></i></span>Newton Sistemas<span class="nav-badge">05</span></a>
+      <a href="lagrange.html" class="nav-item"><span class="nav-icon"><i class="fas fa-bezier-curve"></i></span>Lagrange<span class="nav-badge">06</span></a>
+      <a href="diferencias-divididas.html" class="nav-item"><span class="nav-icon"><i class="fas fa-table"></i></span>Dif. Divididas<span class="nav-badge">07</span></a>
+      <a href="minimos-cuadrados.html" class="nav-item"><span class="nav-icon"><i class="fas fa-scatter-chart"></i></span>Mínimos Cuadrados<span class="nav-badge">08</span></a>
+    </nav>
+    <div class="sidebar-footer">v1.0.0 · Simulación Numérica</div>
+  </aside>
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        <div class="topbar-breadcrumb"><span>SimNum</span><span class="separator">/</span><span>Métodos</span><span class="separator">/</span><span class="current">Newton Sistemas</span></div>
+      </div>
+      <div class="topbar-actions"><span class="topbar-tag"># 05 · Sistemas No Lineales</span></div>
+    </header>
+
+    <main class="page-body">
+      <div class="method-hero">
+        <div class="method-hero-left">
+          <div class="method-hero-icon icon-orange" style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;"><i class="fas fa-table-cells"></i></div>
+          <div class="method-number">Método 05</div>
+          <h1 class="method-title">Newton para Sistemas<br>No Lineales</h1>
+          <p class="method-description">Extensión multivariable del método de Newton-Raphson. Resuelve sistemas de ecuaciones no lineales usando la matriz Jacobiana y el método de eliminación de Gauss en cada iteración.</p>
+        </div>
+        <div class="method-meta">
+          <span class="meta-chip"><i class="fas fa-tag"></i> Sistemas · No Lineales</span>
+          <span class="meta-chip"><i class="fas fa-table-cells"></i> Matriz Jacobiana</span>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-header"><div class="section-icon"><i class="fas fa-book-open"></i></div><h2>Fundamentos Teóricos</h2></div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE INSERTARÁ LA TEORÍA COMPLETA DE NEWTON PARA SISTEMAS NO LINEALES -->
+          <div class="theory-text">
+            <h3>1. Formulación del Problema</h3>
+            <p>Dado un sistema de n ecuaciones no lineales con n incógnitas, se busca el vector x = [x₁, x₂, ..., xₙ]ᵀ que satisfaga simultáneamente todas las ecuaciones:</p>
+            <div class="formula-box">
+              <div class="formula-label">Sistema de ecuaciones no lineales</div>
+              <div class="formula-content">F(x) = 0,  donde F: ℝⁿ → ℝⁿ</div>
+            </div>
+
+            <h3>2. La Matriz Jacobiana</h3>
+            <p>La generalización multivariable de la derivada es la <strong>matriz Jacobiana J(x)</strong>, cuyos elementos son todas las derivadas parciales de cada función respecto a cada variable:</p>
+            <div class="formula-box">
+              <div class="formula-label">Elemento (i,j) de la Jacobiana</div>
+              <div class="formula-content">J_ij = ∂fᵢ / ∂xⱼ</div>
+            </div>
+
+            <h3>3. Fórmula Iterativa</h3>
+            <p>En cada iteración se resuelve el sistema lineal J(xₙ)·Δx = −F(xₙ) y se actualiza el vector solución:</p>
+            <div class="formula-box">
+              <div class="formula-label">Actualización del vector solución</div>
+              <div class="formula-content">x_(n+1) = xₙ + Δx,  donde J(xₙ)·Δx = −F(xₙ)</div>
+            </div>
+
+            <div class="algo-steps">
+              <div class="algo-step"><p>Seleccionar el vector inicial x⁰ = [x₁⁰, x₂⁰, ..., xₙ⁰]ᵀ.</p></div>
+              <div class="algo-step"><p>Evaluar el vector F(xₙ) y construir la matriz Jacobiana J(xₙ).</p></div>
+              <div class="algo-step"><p>Resolver el sistema lineal J(xₙ)·Δx = −F(xₙ) (por eliminación de Gauss).</p></div>
+              <div class="algo-step"><p>Actualizar: x_(n+1) = xₙ + Δx.</p></div>
+              <div class="algo-step"><p>Evaluar la norma ‖Δx‖ o ‖F(x_(n+1))‖. Si es menor que la tolerancia, detener.</p></div>
+              <div class="algo-step"><p>Si no, repetir desde el paso 2 con el nuevo xₙ.</p></div>
+            </div>
+
+            <h3>4. Criterio de Convergencia</h3>
+            <div class="formula-box">
+              <div class="formula-label">Norma euclidiana del error</div>
+              <div class="formula-content">‖Δx‖₂ = √(Δx₁² + Δx₂² + ... + Δxₙ²) &lt; ε</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pdf-card">
+        <div class="pdf-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="pdf-info"><h3>Material de Apoyo</h3><p>Construcción de la Jacobiana, ejemplos de sistemas 2×2 y 3×3, y análisis de convergencia multivariable.</p></div>
+        <a href="../assets/pdf/newton-sistemas.pdf" class="btn-download" download><i class="fas fa-download"></i> Descargar PDF</a>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-header"><div class="section-icon"><i class="fas fa-flask"></i></div><h2>Simulador — Newton para Sistemas</h2></div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE IMPLEMENTARÁ LA LÓGICA DEL SIMULADOR EN JAVASCRIPT -->
+          <div class="simulator-grid">
+            <div>
+              <div class="form-group">
+                <label class="form-label">Dimensión del sistema (n)</label>
+                <select class="form-select" id="nsDim">
+                  <option value="2">2×2 — Dos ecuaciones</option>
+                  <option value="3">3×3 — Tres ecuaciones</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ecuación f₁(x, y)</label>
+                <input type="text" class="form-input" placeholder="Ej: x^2 + y^2 - 4">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ecuación f₂(x, y)</label>
+                <input type="text" class="form-input" placeholder="Ej: x^2 - y - 1">
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label class="form-label">Punto inicial x₀</label>
+                <input type="number" class="form-input" placeholder="Valor inicial de x" step="any" value="1">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Punto inicial y₀</label>
+                <input type="number" class="form-input" placeholder="Valor inicial de y" step="any" value="1">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tolerancia (ε)</label>
+                <input type="number" class="form-input" value="0.0001" step="any">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Máximo de iteraciones</label>
+                <input type="number" class="form-input" value="50">
+              </div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="alert('Lógica pendiente de implementación JS')"><i class="fas fa-play"></i> Resolver Sistema</button>
+            <button class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-header"><div class="section-icon"><i class="fas fa-chart-bar"></i></div><h2>Resultados</h2></div>
+        <div class="content-section-body" style="padding:0;">
+          <div class="results-panel" style="border:none;border-radius:0;">
+            <div class="results-header"><div class="results-dot"></div>SALIDA · NEWTON SISTEMAS</div>
+            <div class="results-body">
+              <div class="results-placeholder">
+                <div class="placeholder-icon"><i class="fas fa-table-cells"></i></div>
+                <!-- AQUÍ SE MOSTRARÁ LA SOLUCIÓN DEL SISTEMA Y LAS ITERACIONES JACOBIANAS -->
+                <p>El vector solución y las iteraciones con la Jacobiana<br>aparecerán aquí cuando se implemente el algoritmo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="page-footer">
+      <span class="footer-text">Simulación Numérica · Método 05 — Newton Sistemas</span>
+      <div class="footer-links">
+        <a href="newton.html"><i class="fas fa-arrow-left"></i> Anterior</a>
+        <a href="lagrange.html">Siguiente <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  hamburger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
+  overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    document.getElementById('progressBar').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  });
+</script>
+</body>
+</html>

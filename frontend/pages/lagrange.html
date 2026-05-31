@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lagrange · Simulación Numérica</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="app-wrapper">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><div class="logo-icon"><i class="fas fa-wave-square"></i></div><div><div class="logo-text">Sim. Numérica</div></div></div>
+      <div class="sidebar-subtitle">// Plataforma de Métodos</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navegación</div>
+      <a href="../index.html" class="nav-item"><span class="nav-icon"><i class="fas fa-house"></i></span>Inicio</a>
+      <div class="nav-section-label">Métodos Numéricos</div>
+      <a href="taylor.html" class="nav-item"><span class="nav-icon"><i class="fas fa-sigma"></i></span>Polinomios de Taylor<span class="nav-badge">01</span></a>
+      <a href="cambio-base.html" class="nav-item"><span class="nav-icon"><i class="fas fa-code"></i></span>Cambio de Base<span class="nav-badge">02</span></a>
+      <a href="biseccion.html" class="nav-item"><span class="nav-icon"><i class="fas fa-divide"></i></span>Bisección<span class="nav-badge">03</span></a>
+      <a href="newton.html" class="nav-item"><span class="nav-icon"><i class="fas fa-chart-line"></i></span>Newton-Raphson<span class="nav-badge">04</span></a>
+      <a href="newton-sistemas.html" class="nav-item"><span class="nav-icon"><i class="fas fa-table-cells"></i></span>Newton Sistemas<span class="nav-badge">05</span></a>
+      <a href="lagrange.html" class="nav-item active"><span class="nav-icon"><i class="fas fa-bezier-curve"></i></span>Lagrange<span class="nav-badge">06</span></a>
+      <a href="diferencias-divididas.html" class="nav-item"><span class="nav-icon"><i class="fas fa-table"></i></span>Dif. Divididas<span class="nav-badge">07</span></a>
+      <a href="minimos-cuadrados.html" class="nav-item"><span class="nav-icon"><i class="fas fa-scatter-chart"></i></span>Mínimos Cuadrados<span class="nav-badge">08</span></a>
+    </nav>
+    <div class="sidebar-footer">v1.0.0 · Simulación Numérica</div>
+  </aside>
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+        <div class="topbar-breadcrumb"><span>SimNum</span><span class="separator">/</span><span>Métodos</span><span class="separator">/</span><span class="current">Lagrange</span></div>
+      </div>
+      <div class="topbar-actions"><span class="topbar-tag"># 06 · Interpolación</span></div>
+    </header>
+
+    <main class="page-body">
+      <div class="method-hero">
+        <div class="method-hero-left">
+          <div class="method-hero-icon icon-pink" style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;"><i class="fas fa-bezier-curve"></i></div>
+          <div class="method-number">Método 06</div>
+          <h1 class="method-title">Polinomio Interpolante<br>de Lagrange</h1>
+          <p class="method-description">Construye un único polinomio de grado n que pasa exactamente por n+1 puntos dados, utilizando los polinomios base de Lagrange como funciones de peso.</p>
+        </div>
+        <div class="method-meta">
+          <span class="meta-chip"><i class="fas fa-tag"></i> Interpolación Polinomial</span>
+          <span class="meta-chip"><i class="fas fa-bezier-curve"></i> Polinomios base</span>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-header"><div class="section-icon"><i class="fas fa-book-open"></i></div><h2>Fundamentos Teóricos</h2></div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE INSERTARÁ LA TEORÍA COMPLETA DEL POLINOMIO INTERPOLANTE DE LAGRANGE -->
+          <div class="theory-text">
+            <h3>1. El Problema de Interpolación</h3>
+            <p>Dado un conjunto de n+1 puntos distintos (x₀,y₀), (x₁,y₁), ..., (xₙ,yₙ), existe un único polinomio P(x) de grado ≤ n que pasa por todos ellos. El método de Lagrange construye este polinomio de forma explícita.</p>
+
+            <h3>2. Polinomios Base de Lagrange</h3>
+            <p>Para cada punto xᵢ se construye un polinomio base Lᵢ(x) que vale 1 en xᵢ y 0 en todos los demás puntos de interpolación.</p>
+            <div class="formula-box">
+              <div class="formula-label">Polinomio base i-ésimo</div>
+              <div class="formula-content">Lᵢ(x) = Π [(x − xⱼ) / (xᵢ − xⱼ)],  j = 0,...,n, j ≠ i</div>
+            </div>
+
+            <h3>3. El Polinomio Interpolante</h3>
+            <p>El polinomio interpolante de Lagrange es la combinación lineal de los polinomios base, ponderada por los valores y de cada punto:</p>
+            <div class="formula-box">
+              <div class="formula-label">Polinomio interpolante de Lagrange</div>
+              <div class="formula-content">P(x) = Σ yᵢ · Lᵢ(x),  i = 0, 1, ..., n</div>
+            </div>
+
+            <div class="algo-steps">
+              <div class="algo-step"><p>Ingresar los n+1 puntos: (x₀,y₀), (x₁,y₁), ..., (xₙ,yₙ).</p></div>
+              <div class="algo-step"><p>Para cada i, calcular el polinomio base Lᵢ(x).</p></div>
+              <div class="algo-step"><p>Multiplicar cada Lᵢ(x) por su correspondiente yᵢ.</p></div>
+              <div class="algo-step"><p>Sumar todos los términos para obtener P(x).</p></div>
+              <div class="algo-step"><p>Evaluar P(x) en el punto deseado x*.</p></div>
+            </div>
+
+            <h3>4. Error de Interpolación</h3>
+            <div class="formula-box">
+              <div class="formula-label">Error de interpolación de Lagrange</div>
+              <div class="formula-content">E(x) = f⁽ⁿ⁺¹⁾(ξ) / (n+1)! · Π (x − xᵢ),  ξ ∈ (min xᵢ, max xᵢ)</div>
+            </div>
+
+            <h3>5. Propiedad de Unicidad</h3>
+            <p>El polinomio interpolante de grado n que pasa por n+1 puntos distintos es <strong>único</strong>. Diferentes métodos de interpolación (Lagrange, Newton, Hermite) construyen el mismo polinomio, solo con representaciones algebraicas distintas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pdf-card">
+        <div class="pdf-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="pdf-info"><h3>Material de Apoyo</h3><p>Demostración de unicidad del polinomio interpolante, fenómeno de Runge y ejemplos numéricos detallados.</p></div>
+        <a href="../assets/pdf/lagrange.pdf" class="btn-download" download><i class="fas fa-download"></i> Descargar PDF</a>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-header"><div class="section-icon"><i class="fas fa-flask"></i></div><h2>Simulador — Interpolación de Lagrange</h2></div>
+        <div class="content-section-body">
+          <!-- AQUÍ SE IMPLEMENTARÁ LA LÓGICA DEL SIMULADOR EN JAVASCRIPT -->
+          <div class="simulator-grid">
+            <div>
+              <div class="form-group">
+                <label class="form-label">Número de puntos (n+1)</label>
+                <input type="number" class="form-input" placeholder="Ej: 4" min="2" max="15" id="lagN" value="4">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Puntos (x, y) — un par por línea</label>
+                <textarea class="form-input textarea-points" id="lagPuntos" placeholder="0, 1&#10;1, 2.718&#10;2, 7.389&#10;3, 20.086"></textarea>
+                <div class="form-hint">Formato: x, y (un punto por fila)</div>
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label class="form-label">Punto a interpolar (x*)</label>
+                <input type="number" class="form-input" placeholder="Ej: 1.5" step="any" id="lagXstar">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mostrar polinomios base Lᵢ(x)</label>
+                <select class="form-select">
+                  <option value="si">Sí — mostrar cada Lᵢ(x)</option>
+                  <option value="no">No — solo resultado final</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Expandir el polinomio P(x)</label>
+                <select class="form-select">
+                  <option value="si">Sí — forma expandida</option>
+                  <option value="no">No — forma de Lagrange</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="alert('Lógica pendiente de implementación JS')"><i class="fas fa-play"></i> Interpolar</button>
+            <button class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="content-section-header"><div class="section-icon"><i class="fas fa-chart-bar"></i></div><h2>Resultados</h2></div>
+        <div class="content-section-body" style="padding:0;">
+          <div class="results-panel" style="border:none;border-radius:0;">
+            <div class="results-header"><div class="results-dot"></div>SALIDA · LAGRANGE</div>
+            <div class="results-body">
+              <div class="results-placeholder">
+                <div class="placeholder-icon"><i class="fas fa-bezier-curve"></i></div>
+                <!-- AQUÍ SE MOSTRARÁ EL POLINOMIO P(x) Y EL VALOR INTERPOLADO -->
+                <p>El polinomio P(x) y el valor interpolado en x* aparecerán aquí<br>cuando se implemente la lógica del algoritmo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="page-footer">
+      <span class="footer-text">Simulación Numérica · Método 06 — Lagrange</span>
+      <div class="footer-links">
+        <a href="newton-sistemas.html"><i class="fas fa-arrow-left"></i> Anterior</a>
+        <a href="diferencias-divididas.html">Siguiente <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  hamburger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); });
+  overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('visible'); });
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    document.getElementById('progressBar').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  });
+</script>
+</body>
+</html>
