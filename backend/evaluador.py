@@ -1,5 +1,6 @@
 from sympy import diff, sympify, symbols, lambdify
 
+
 class Evaluador:
     def __init__(self, expresion_str):
         self.x = symbols('x') # Definimos el símbolo 'x' para usar en la expresión

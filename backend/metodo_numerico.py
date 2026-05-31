@@ -1,4 +1,6 @@
 from evaluador import Evaluador
+import pandas as pd
+
 
 class MetodoNumerico:
     def __init__(self, evaluador: Evaluador, tolerancia: float, max_iter: int):
@@ -9,6 +11,16 @@ class MetodoNumerico:
 
     def limpiar_historial(self):
         self.historial = []
+    
+    def generar_excel(self, nombre_archivo):
+        if not self.historial:
+            print("No hay datos en el historial para generar el Excel.")
+            return
+        df = pd.DataFrame(self.historial)
+        df = df.round(6)  # Redondear a 6 decimales para mejor presentación
+        ruta = f"{nombre_archivo}.xlsx"
+        df.to_excel(ruta, index=False, engine='openpyxl')
+        print(f"Archivo '{ruta}' generado exitosamente.")
 
 
 

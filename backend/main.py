@@ -15,9 +15,9 @@ if __name__ == "__main__":
     # pero pasamos 15 como max_iter para la parte fraccionaria.
     conversor = CambiosDeBase(None, None, 15) 
     
-    base_origen = 10
-    numero_prueba = "22.625"
-    base_destino = 2
+    base_origen = 2
+    numero_prueba = "1011.101"  # Esto es 11.625 en decimal 
+    base_destino = 3 # en base 3, esto debería ser aproximadamente "102.0021"
     
     print(f"Convirtiendo el número {numero_prueba} (Base {base_origen}) a Base {base_destino}...")
     resultado_base = conversor.ejecutar(base_origen, numero_prueba, base_destino)
@@ -29,13 +29,15 @@ if __name__ == "__main__":
         
         # Tabla del procedimiento (Historial de divisiones/multiplicaciones)
         print("--- PROCEDIMIENTO ALGORÍTMICO ---")
-        print(f"{'Fase':<30} | {'Operación':<15} | {'Resultado':<10} | {'Dígito/Acumulado'}")
-        print("-" * 80)
+        print(f"{'Fase':<30} | {'Operación':<15} | {'Resultado':<10} | {'Dígito Extraído':<16} | {'Acumulado':<12}")
+        print("-" * 100)
         for paso in conversor.historial:
             # Buscamos 'Dígito Extraído', y si no está (porque es polinómica), buscamos 'Acumulado'
-            valor_extra = paso.get('Dígito Extraído', paso.get('Acumulado', ''))
-            print(f"{paso['Fase']:<30} | {paso['Operación']:<15} | {paso['Resultado']:<10.4f} | {valor_extra}")
+            digito_val = f"{paso['Dígito Extraído']}" if paso['Dígito Extraído'] is not None else "......"
+            acum_val = f"{paso['Acumulado']:.4f}" if paso['Acumulado'] is not None else "......"
+            print(f"{paso['Fase']:<30} | {paso['Operación']:<15} | {paso['Resultado']:<10.4f} | {digito_val:<16} | {acum_val:<12}")
         print("-" * 80)
+    conversor.generar_excel("historial_cambio_base")
         
     print("\n\n" + "="*60)
     print("PROBANDO MÉTODO DE BISECCIÓN")
@@ -62,9 +64,12 @@ if __name__ == "__main__":
         for it in resultado["iteraciones"]:
             err_str = f"{it['error']:<10.6f}" if it['error'] is not None else f"{'.....':<10}"
             print(f"{it['iter']:<4} | {it['a']:<10.6f} | {it['b']:<10.6f} | {it['p_n']:<10.6f} | {it['f_p_n']:<11.6f} | {err_str}")
-        
+    busqueda_raiz.generar_excel("historial_biseccion")
+    busqueda_raiz.graficar("grafica_biseccion")
         # Al final de tu código de prueba, puedes agregar esto:
     print("\n" + "="*50 + "\nProbando Newton-Raphson:\n" + "="*50)
+    expresion = "x^3 - 2*x^2 -5"    
+    evaluador_test = Evaluador(expresion)
     metodo_newton = NewtonRaphson(evaluador_test, tolerancia, maximo_iteraciones)
     res_newton = metodo_newton.ejecutar(0.5)
 
@@ -73,4 +78,7 @@ if __name__ == "__main__":
     print(f"{'n':<4} | {'xn':<10} | {'f(xn)':<11} | {'ERROR':<10}")
     print("-" * 45)
     for it in res_newton["iteraciones"]:
-        print(f"{it['iter']:<4} | {it['x_n']:<10.6f} | {it['f_x_n']:<11.6f} | {it['error']:<10.6f}")
+        err_str = f"{it['error']:<10.6f}" if it['error'] is not None else f"{'.....':<10}"
+        print(f"{it['iter']:<4} | {it['x_n']:<10.6f} | {it['f_x_n']:<11.6f} | {err_str}")
+    metodo_newton.generar_excel("historial_newton")
+    metodo_newton.graficar("grafica_newton_raphson")

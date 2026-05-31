@@ -40,7 +40,8 @@ class CambiosDeBase(MetodoNumerico):
                         "Fase": "Entera (División)",
                         "Operación": f"{parte_entera} / {n}",
                         "Resultado": cociente,
-                        "Dígito Extraído": residuo   
+                        "Dígito Extraído": residuo,
+                        "Acumulado": None  # Aquí no hay un acumulado como tal, pero lo dejamos para mantener la estructura de la tabla
                     })
                     
                     acc_entero = str(residuo) + acc_entero
@@ -62,7 +63,8 @@ class CambiosDeBase(MetodoNumerico):
                     "Fase": "Fraccionaria (Multiplicación)",
                     "Operación": f"{parte_decimal} * {n}",
                     "Resultado": producto,
-                    "Dígito Extraído": digito   
+                    "Dígito Extraído": digito,
+                    "Acumulado": None  # Aquí no hay un acumulado como tal, pero lo dejamos para mantener la estructura de la tabla
                 })
                 
                 acc_fraccionaria += str(digito)
@@ -88,7 +90,8 @@ class CambiosDeBase(MetodoNumerico):
                 self.historial.append({
                     "Fase": "Polinómica (Base N a 10)",
                     "Operación": f"{i} * ({n}^{exponente})",
-                    "Resultado": valor_paso,    # Lo que aportó este dígito
+                    "Resultado": valor_paso,    # Lo que aportó este dígito,
+                    "Dígito Extraído": None,    # Aquí no hay un dígito extraído, pero lo dejamos para mantener la estructura de la tabla
                     "Acumulado": acc            # Cómo va la suma total hasta ahora
                 })
                 
