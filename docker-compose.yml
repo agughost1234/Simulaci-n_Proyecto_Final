@@ -1,0 +1,115 @@
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: calculadora-db
+    environment:
+      POSTGRES_DB: calculadora_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=es_CO.UTF-8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - calculadora-network
+
+  # Django Backend
+  backend:
+    build:
+      context: ./backend/django_api
+      dockerfile: Dockerfile
+    container_name: calculadora-backend
+    command: >
+      sh -c "
+      python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4 --timeout 120
+      "
+    env_file:
+      - ./backend/django_api/.env
+    environment:
+      DEBUG: ${DEBUG:-False}
+      SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
+      DB_HOST: db
+      DB_PORT: 5432
+      ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0,backend
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+    volumes:
+      - ./backend/django_api:/app
+      - django_static:/app/staticfiles
+      - django_media:/app/media
+      - django_logs:/app/logs
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - calculadora-network
+
+  # Frontend (Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: calculadora-frontend
+    volumes:
+      - ./frontend:/app
+      - nginx_cache:/var/cache/nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - calculadora-network
+
+  # pgAdmin (Database Management UI) - Optional
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: calculadora-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@calculadora.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      SCRIPT_NAME: /pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - calculadora-network
+    profiles:
+      - dev
+
+volumes:
+  postgres_data:
+    driver: local
+  django_static:
+    driver: local
+  django_media:
+    driver: local
+  django_logs:
+    driver: local
+  nginx_cache:
+    driver: local
+
+networks:
+  calculadora-network:
+    driver: bridge
