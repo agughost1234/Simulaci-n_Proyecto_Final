@@ -1,0 +1,83 @@
+# Django project
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Database
+db.sqlite3
+*.db
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Media and Static
+media/
+staticfiles/
+/static/
+
+# Django
+/assets/
+/admin_panel/
+instance/
+.webassets-cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+reports/
+exports/
+*.xlsx
+*.pdf
+*.png
+*.jpg
+
+# Docker
+.docker-compose.yml
+docker-compose.override.yml
