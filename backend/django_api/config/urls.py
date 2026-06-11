@@ -15,6 +15,12 @@ from apps.calculadora.views import (
     cambios_base_calcular,
     calculo_error,
     calculo_derivada,
+    polinomio_taylor_calcular,
+    lagrange_calcular,
+    diferencias_divididas_calcular,
+    ajuste_curvas_calcular,
+    exportar_excel,
+    exportar_multiplos_excel,
 )
 
 urlpatterns = [
@@ -30,6 +36,14 @@ urlpatterns = [
     path('api/calculos/cambios-base/', cambios_base_calcular, name='cambios-base'),
     path('api/calculos/error/', calculo_error, name='error'),
     path('api/calculos/derivada/', calculo_derivada, name='derivada'),
+    path('api/calculos/polinomio-taylor/', polinomio_taylor_calcular, name='taylor'),
+    path('api/calculos/interpolacion-lagrange/', lagrange_calcular, name='lagrange'),
+    path('api/calculos/diferencias-divididas/', diferencias_divididas_calcular, name='diferencias-divididas'),
+    path('api/calculos/ajuste-curvas/', ajuste_curvas_calcular, name='ajuste-curvas'),
+    
+    # Exportar datos
+    path('api/exportar/excel/', exportar_excel, name='exportar-excel'),
+    path('api/exportar/excel-multiplo/', exportar_multiplos_excel, name='exportar-multiplos-excel'),
     
     # OpenAPI Schema & Documentation
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

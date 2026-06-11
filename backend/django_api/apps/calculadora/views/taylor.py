@@ -1,25 +1,27 @@
-"""Vista para el método de Bisección."""
+"""Vista para Polinomio de Taylor."""
 import logging
+import base64
+import io
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from ..services.evaluador import Evaluador
-from ..services.biseccion import Biseccion
+from ..services.polinomio import Polinomio
 
 logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
-def biseccion_calcular(request):
+def polinomio_taylor_calcular(request):
     """
-    POST /api/calculos/biseccion/
-    Calcula la raíz de una función usando el método de Bisección.
+    POST /api/calculos/polinomio-taylor/
+    Calcula la aproximación por serie de Taylor.
     """
     try:
         datos = request.data
         
         # Validar campos requeridos
-        campos_requeridos = ['expresion', 'a_inicial', 'b_inicial']
+        campos_requeridos = ['expresion', 'centro', 'grado', 'punto_evaluacion']
         for campo in campos_requeridos:
             if campo not in datos:
                 return Response(
@@ -28,15 +30,14 @@ def biseccion_calcular(request):
                 )
         
         expresion = datos['expresion']
-        a_inicial = float(datos['a_inicial'])
-        b_inicial = float(datos['b_inicial'])
-        tolerancia = float(datos.get('tolerancia', 0.0001))
-        max_iteraciones = int(datos.get('max_iteraciones', 100))
+        centro = float(datos['centro'])
+        grado = int(datos['grado'])
+        punto_eval = float(datos['punto_evaluacion'])
         
-        # Ejecutar bisección
+        # Crear evaluador y ejecutar
         evaluador = Evaluador(expresion)
-        metodo = Biseccion(evaluador, tolerancia, max_iteraciones)
-        resultado = metodo.ejecutar(a_inicial, b_inicial)
+        metodo = Polinomio(evaluador)
+        resultado = metodo.ejecutar(centro, grado, punto_eval)
         
         if 'error' in resultado:
             return Response(resultado, status=status.HTTP_400_BAD_REQUEST)
@@ -47,13 +48,13 @@ def biseccion_calcular(request):
         return Response(resultado, status=status.HTTP_200_OK)
         
     except ValueError as e:
-        logger.error(f"ValueError en bisección: {str(e)}")
+        logger.error(f"ValueError en Taylor: {str(e)}")
         return Response(
             {'error': f'Error de validación: {str(e)}'},
             status=status.HTTP_400_BAD_REQUEST
         )
     except Exception as e:
-        logger.error(f"Error en bisección: {str(e)}")
+        logger.error(f"Error en Taylor: {str(e)}")
         return Response(
             {'error': f'Error en cálculo: {str(e)}'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR

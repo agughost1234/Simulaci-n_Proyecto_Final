@@ -40,6 +40,9 @@ def newton_raphson_calcular(request):
         if 'error' in resultado:
             return Response(resultado, status=status.HTTP_400_BAD_REQUEST)
         
+        # Agregar gráfica en base64
+        resultado['grafica_png'] = metodo.grafica_base64
+        
         return Response(resultado, status=status.HTTP_200_OK)
         
     except ValueError as e:
