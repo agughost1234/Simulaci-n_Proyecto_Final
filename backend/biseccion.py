@@ -2,6 +2,8 @@
 from metodo_numerico import MetodoNumerico
 import matplotlib.pyplot as plt
 import numpy as np
+import io
+import base64
 
 
 class Biseccion(MetodoNumerico):
@@ -83,4 +85,24 @@ class Biseccion(MetodoNumerico):
         plt.savefig(ruta_imagen, bbox_inches='tight')
         plt.close()
         print(f"Gráfica guardada como {ruta_imagen}")
+
+    def obtener_grafica_base64(self):
+        if not self.historial: return ""
+        a_inicial, b_inicial = self.historial[0]['a'], self.historial[0]['b']
+        x_vals = np.linspace(a_inicial - 0.5, b_inicial + 0.5, 200)
+        y_vals = [self.evaluador.evaluar(x) for x in x_vals]
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(x_vals, y_vals, color='blue')
+        plt.axhline(0, color='black', linewidth=0.5, linestyle='--')
+        
+        p_n_vals = [it['p_n'] for it in self.historial]
+        f_p_n_vals = [it['f_p_n'] for it in self.historial]
+        plt.scatter(p_n_vals, f_p_n_vals, color='red', zorder=5)
+        
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        plt.close()
+        return base64.b64encode(buffer.read()).decode('utf-8')
 
