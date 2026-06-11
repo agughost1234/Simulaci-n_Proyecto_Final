@@ -314,51 +314,80 @@ graph LR
 
 ```
 Simulaci-n_Proyecto_Final/
-├── backend/django_api/
-│   ├── config/
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   └── wsgi.py
-│   ├── apps/calculadora/
-│   │   ├── services/          # Lógica numérica
-│   │   │   ├── evaluador.py
-│   │   │   ├── biseccion.py
-│   │   │   ├── newton_raphson.py
-│   │   │   ├── polinomio.py
-│   │   │   ├── interpolacion_lagrange.py
-│   │   │   ├── diferencias_divididas.py
-│   │   │   ├── ajuste_curvas.py
-│   │   │   ├── cambios_base.py
-│   │   │   └── metodo_numerico.py
-│   │   ├── views/             # Endpoints
-│   │   │   ├── biseccion.py
-│   │   │   ├── newton_raphson.py
-│   │   │   ├── taylor.py
-│   │   │   ├── interpolacion_lagrange.py
-│   │   │   ├── diferencias_divididas.py
-│   │   │   ├── ajuste_curvas.py
-│   │   │   ├── cambios_base.py
-│   │   │   ├── error.py
-│   │   │   ├── derivada.py
-│   │   │   ├── export.py
-│   │   │   └── api_root.py
-│   │   ├── serializers/
-│   │   └── migrations/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   └── entrypoint.sh
-├── frontend/
-│   ├── index.html
-│   ├── css/style.css
-│   ├── pages/
-│   │   ├── biseccion.html
-│   │   ├── newton.html
-│   │   ├── taylor.html
-│   │   └── ...
-│   └── Dockerfile
-├── docker-compose.yml
-├── .env
-└── README.md
+backend/
+  django_api/
+    config/
+      settings.py (Configuracion Django, BD, apps)
+      urls.py (Enrutamiento API REST)
+      wsgi.py
+    apps/
+      calculadora/
+        models.py (Modelos Django, no usados para persistencia)
+        views/ (Funciones vistas con @api_view)
+          biseccion.py
+          newton_raphson.py
+          taylor.py
+          interpolacion_lagrange.py
+          diferencias_divididas.py
+          ajuste_curvas.py
+          cambios_base.py
+          error.py
+          derivada.py
+          export.py (Exportacion Excel)
+          api_root.py
+        serializers/ (Validacion de entrada, no usada)
+        services/ (Logica numerica)
+          evaluador.py (Parsing y evaluacion con SymPy)
+          biseccion.py
+          newton_raphson.py
+          polinomio.py
+          interpolacion_lagrange.py
+          diferencias_divididas.py
+          ajuste_curvas.py
+          cambios_base.py
+          metodo_numerico.py (Clase base)
+          __init__.py
+        migrations/ (Django migrations, sin modelos persistentes)
+    Dockerfile
+    requirements.txt (Dependencias Python)
+    entrypoint.sh (Script de inicio con migraciones)
+    manage.py
+frontend/
+  index.html
+  css/
+    style.css
+  pages/ (Paginas HTML para cada metodo)
+    biseccion.html
+    newton.html
+    taylor.html
+    lagrange.html
+    diferencias-divididas.html
+    ajuste_curvas.html
+    ...
+  Dockerfile
+  nginx.conf (Configuracion de servidor web)
+docker-compose.yml (Orquestacion: PostgreSQL, Django, Nginx, Frontend)
+Readme.txt
+.env (Variables de entorno)
+```
+
+### Diagrama de Módulos
+
+```mermaid
+graph TB
+    A["Entrada de usuario<br/>Expresion matematica"]
+    B["Evaluador<br/>SymPy"]
+    C["Servicio de Metodo<br/>Logica Numerica"]
+    D["Generador de Graficas<br/>Matplotlib"]
+    E["Exportador<br/>Pandas/openpyxl"]
+    F["Respuesta JSON<br/>Base64"]
+    
+    A --> B
+    B --> C
+    C --> D
+    C --> E
+    D --> F
+    E --> F
 ```
 
 ---
@@ -499,235 +528,95 @@ graph TD
 
 ## Conclusiones
 
-Esta aplicación demuestra la **implementación práctica** de métodos numéricos fundamentales
-en análisis numérico. La arquitectura separa claramente:
+Esta aplicación demuestra la **implementación práctica** de métodos numéricos fundamentales en análisis numérico.
 
-- **Servicios**: Lógica numérica pura
-- **Vistas**: Endpoints REST stateless
-- **Frontend**: Consumidor de API
+## Arquitectura de Capas
 
-El uso de **Docker** asegura portabilidad y reproducibilidad. La **documentación Swagger** 
-facilita integración y pruebas. El enfoque **sin autenticación** es apropiado para contexto 
-académico.
+```mermaid
+graph TB
+    subgraph "Capa de Presentación"
+        A["Frontend HTML/JavaScript"]
+    end
+    
+    subgraph "Capa API"
+        B["Endpoints REST<br/>12 funciones vistas"]
+    end
+    
+    subgraph "Capa de Lógica"
+        C["Servicios Numéricos<br/>9 métodos"]
+    end
+    
+    subgraph "Capa de Datos"
+        D["PostgreSQL<br/>Base de datos"]
+    end
+    
+    A -->|HTTP| B
+    B --> C
+    B --> D
+    C --> D
+```
 
-Criterio de Convergencia:
-- Error relativo: |x_n+1 - x_n| / |x_n+1| < tolerancia
-- Numero maximo de iteraciones para evitar bucles infinitos
+## Separación de Responsabilidades
 
-Complejidad: O(log(b-a/tol)) iteraciones
+| Componente | Responsabilidad | Ubicación |
+|-----------|-----------------|----------|
+| **Servicios** | Lógica numérica pura | `/services/` |
+| **Vistas** | Endpoints REST stateless | `/views/` |
+| **Frontend** | Consumidor de API | `/frontend/` |
+| **Evaluador** | Parsing y ejecución de expresiones | `evaluador.py` |
 
-Implementacion:
-- Archivo: backend/django_api/apps/calculadora/services/biseccion.py
-- Generacion de grafica con dos subgraficas: funcion + raiz y convergencia del error
-- Retorna historial detallado de cada iteracion
+## Características Principales
 
-2. METODO DE NEWTON-RAPHSON
+- **Portabilidad**: Docker Compose orquesta todos los servicios
+- **Documentación**: Swagger interactivo en `/api/docs/`
+- **Escalabilidad**: Endpoints independientes por método
+- **Precisión**: LaTeX en documentación, análisis de convergencia en cada método
 
-Proposito: Encontrar una raiz de f(x) = 0 con convergencia cuadratica.
+## Fórmulas de Convergencia
 
-Teoria Matematica:
-- Formula de recurrencia: x_n+1 = x_n - f(x_n) / f'(x_n)
-- Requiere evaluacion de la derivada en cada iteracion
-- La derivada se calcula simbolicamente usando SymPy: f'(x) = d/dx[f(x)]
-- Interpretacion geometrica: la linea tangente a f en (x_n, f(x_n)) intersecta 
-  el eje x en x_n+1
+### Bisección
 
-Condiciones de Convergencia:
-- f'(x_0) != 0 (la derivada no puede ser cero en el punto inicial)
-- Error relativo: |x_n+1 - x_n| / |x_n+1| < tolerancia
-- La convergencia es cuadratica cerca de la raiz: |e_n+1| ~ C * |e_n|^2
+$$\text{Iteraciones} = O\left(\log\frac{b-a}{\varepsilon}\right)$$
 
-Comparacion con Biseccion:
-- Newton converge mucho mas rapidamente (cuadratica vs lineal)
-- Requiere la derivada, mientras que Biseccion solo necesita la funcion
-- Newton puede divergir si el punto inicial es mal elegido
-- Biseccion garantiza convergencia si se cumple Bolzano
+### Newton-Raphson
 
-Implementacion:
-- Archivo: backend/django_api/apps/calculadora/services/newton_raphson.py
-- Calculo simbolico de derivada con SymPy
-- Grafica muestra tangentes de las primeras iteraciones
-- Manejo de error cuando f'(x_n) = 0
+$$|e_{n+1}| \approx C \cdot |e_n|^2 \quad \text{(Convergencia cuadrática)}$$
 
-3. POLINOMIO DE TAYLOR
+### Criterio de Parada Común
 
-Proposito: Aproximar una funcion f(x) mediante un polinomio alrededor de un punto.
+$$E_{\text{rel}} = \frac{|x_{n+1} - x_n|}{|x_{n+1}|} < \varepsilon$$
 
-Teoria Matematica:
-- Serie de Taylor de grado n alrededor del punto c:
-  P_n(x) = sum_{k=0}^{n} [ f^(k)(c) / k! * (x - c)^k ]
-  
-- Componentes:
-  * f^(k)(c) es la k-esima derivada de f evaluada en c
-  * k! es el factorial de k
-  * (x - c)^k es la potencia del desplazamiento
+## Ventajas del Diseño
 
-- Propiedades:
-  * El polinomio coincide con f en el punto c: P_n(c) = f(c)
-  * Las primeras n derivadas coinciden: P_n^(k)(c) = f^(k)(c) para k = 0, 1, ..., n
-  * Error de aproximacion: |f(x) - P_n(x)| <= M_{n+1} * |x - c|^{n+1} / (n+1)!
-    donde M_{n+1} es una cota de |f^(n+1)(t)| en el intervalo
+- **Sin autenticación**: Apropiado para contexto académico
+- **Base64 para multimedia**: Gráficas y Excel se transmiten en respuestas JSON
+- **Separación de código**: Servicios reutilizables, vistas agnósticas
+- **Validación simbólica**: SymPy asegura expresiones válidas
 
-Implementacion:
-- Archivo: backend/django_api/apps/calculadora/services/polinomio.py
-- Calculo de coeficientes usando derivadas simbolicas
-- Comparacion entre valor exacto y aproximacion de Taylor
-- Grafica muestra funcion original y aproximacion
+## Próximas Mejoras Posibles
 
-4. INTERPOLACION DE LAGRANGE
+- Autenticación y autorización para producción
+- Persistencia de cálculos en PostgreSQL
+- Caché de resultados frecuentes
+- WebSocket para cálculos en tiempo real
+- Frontend mejorado con gráficas interactivas
 
-Proposito: Encontrar un polinomio que pasa por puntos dados (x_i, y_i).
+---
 
-Teoria Matematica:
-- Polinomio de Lagrange de grado n-1 para n puntos:
-  P(x) = sum_{i=0}^{n-1} [ y_i * L_i(x) ]
-  
-- Donde L_i(x) es el polinomio de base de Lagrange:
-  L_i(x) = product_{j=0, j!=i}^{n-1} [ (x - x_j) / (x_i - x_j) ]
-  
-- Propiedades:
-  * Pasa exactamente por todos los puntos dados: P(x_i) = y_i
-  * Grado = numero de puntos - 1
-  * Es el unico polinomio de grado minimo que interpola los puntos
-  * Evaluacion eficiente: O(n^2) operaciones para n puntos
+## Estructura de Directorios
 
-Desventajas:
-- El fenomeno de Runge: oscilaciones en los extremos con muchos puntos
-- Inestabilidad numerica con puntos muy cercanos
-- Requiere conocer todos los puntos de antemano
-
-Implementacion:
-- Archivo: backend/django_api/apps/calculadora/services/interpolacion_lagrange.py
-- Calculo de L_i(x) para cada punto
-- Grafica muestra puntos originales y polinomio interpolante
-- Retorna valor interpolado en punto de evaluacion
-
-5. DIFERENCIAS DIVIDIDAS DE NEWTON
-
-Proposito: Interpolacion polinomial alternativa con actualizaciones incrementales.
-
-Teoria Matematica:
-- Polinomio de Newton: P(x) = c_0 + c_1*(x-x_0) + c_2*(x-x_0)*(x-x_1) + ...
-  
-- Coeficientes por diferencias divididas:
-  c_k = f[x_0, x_1, ..., x_k] (diferencia dividida de orden k)
-  
-- Tabla de diferencias divididas:
-  f[x_i] = y_i                                    (orden 0)
-  f[x_i, x_i+1] = (f[x_i+1] - f[x_i]) / (x_i+1 - x_i)   (orden 1)
-  f[x_i, x_i+1, x_i+2] = (f[x_i+1, x_i+2] - f[x_i, x_i+1]) / (x_i+2 - x_i)  (orden 2)
-  
-- Ventajas sobre Lagrange:
-  * Actualizacion incremental: agregar un punto solo requiere calcular una fila mas
-  * Mejor estabilidad numerica
-  * Coeficientes directos sin resolver sistema de ecuaciones
-  * Menor costo computacional: O(n^2) vs O(n^3) de Lagrange
-
-Implementacion:
-- Archivo: backend/django_api/apps/calculadora/services/diferencias_divididas.py
-- Construccion de tabla de diferencias divididas
-- Evaluacion de polinomio de Newton eficiente
-- Grafica muestra polinomio interpolante y tabla de diferencias
-
-6. AJUSTE DE CURVAS POR MINIMOS CUADRADOS
-
-Proposito: Encontrar la curva (polinomial, exponencial, logaritmica) que mejor 
-aproxima un conjunto de puntos con ruido o dispersos.
-
-Teoria Matematica:
-
-a) Ajuste Polinomico de Grado n:
-   - Modelo: y = a_0 + a_1*x + a_2*x^2 + ... + a_n*x^n
-   - Criterio: minimizar sum_{i=1}^{m} (y_i - y_pred_i)^2
-   - Resuelve sistema normal: (X^T * X) * a = X^T * y
-   - Coeficientes obtenidos por np.polyfit()
-
-b) Ajuste Exponencial:
-   - Modelo: y = a * exp(b*x)
-   - Transformacion logaritmica: ln(y) = ln(a) + b*x
-   - Se resuelve como regresion lineal en escala log
-   - Coeficientes: a = exp(intercept), b = pendiente
-
-c) Ajuste Logaritmico:
-   - Modelo: y = a + b*ln(x)
-   - Transformacion: y = a + b*ln(x) (regresion lineal directa)
-   - Requiere x > 0 para todos los puntos
-
-Metricas de Bondad del Ajuste:
-- Suma de cuadrados residuales (SSR): sum(residuos^2)
-- Suma total de cuadrados (SST): sum((y - media(y))^2)
-- Coeficiente de determinacion (R^2) = 1 - SSR/SST
-  * R^2 = 1: ajuste perfecto
-  * R^2 = 0: el modelo no explica variabilidad
-  * R^2 negativo: modelo peor que la media
-  
-- Error cuadratico medio (RMSE): sqrt(SSR / n)
-- Desviacion estandar de residuos: std(residuos)
-
-Implementacion:
-- Archivo: backend/django_api/apps/calculadora/services/ajuste_curvas.py
-- Soporte para tres tipos de ajuste
-- Retorna coeficientes, ecuacion, R^2, RMSE y desviacion estandar
-- Grafica muestra puntos reales, curva ajustada y residuos
-
-7. CALCULOS AUXILIARES
-
-a) Cálculo de Errores:
-   - Error absoluto: E_abs = |valor_verdadero - valor_aproximado|
-   - Error relativo: E_rel = E_abs / |valor_verdadero|
-   - Error porcentual: E_pct = E_rel * 100%
-
-b) Derivadas:
-   - Calculo simbolico con SymPy
-   - Retorna derivada en forma simbolica y evaluada en punto
-   - Ejemplo: d/dx[x^2 + 3x] = 2x + 3
-
-c) Cambios de Base:
-   - Conversion de numeros entre bases 2, 8, 10, 16
-   - Manejo de parte entera y fraccionaria por separado
-   - Base N a base 10: evaluacion polinomica
-   - Base 10 a base N: algoritmo de division/multiplicacion
-
-CARACTERISTICAS TECNICAS
-
-Procesamiento de Expresiones:
-- Validacion y parsing con SymPy
-- Soporte para: +, -, *, /, **, funciones trigonometricas, exp, log, sqrt, abs
-- Transformacion automatica: ^ convertido a **
-- Manejo de excepciones para expresiones invalidas
-
-Generacion de Graficas:
-- Matplotlib para creacion de graficas
-- Codificacion PNG en base64 para transmision sin almacenamiento
-- Multiples subgraficas para mostrare analisis (funcion + convergencia, etc.)
-- Resolucion: 100 DPI, formato PNG optimizado
-
-Exportacion de Datos:
-- Excel (.xlsx) con Pandas y openpyxl
-- Base64 para transmision sin almacenamiento
-- Soporte para multiples hojas en un archivo
-- Columnas: automaticamente inferidas de los datos
-
-API REST:
-- Endpoints sin autenticacion (proyecto academico)
-- Documentacion Swagger interactiva en /api/docs/
-- ReDoc alternativo en /api/redoc/
-- Respuestas JSON estructuradas
-- Manejo de errores con codigos HTTP apropiados
-
-ESTRUCTURA DE DIRECTORIOS
-
+```
 Simulaci-n_Proyecto_Final/
 ├── backend/
 │   └── django_api/
 │       ├── config/
-│       │   ├── settings.py        (Configuracion Django, BD, apps)
-│       │   ├── urls.py            (Enrutamiento API REST)
+│       │   ├── settings.py              # Configuración Django, BD, apps
+│       │   ├── urls.py                  # Enrutamiento API REST
 │       │   └── wsgi.py
 │       ├── apps/
 │       │   └── calculadora/
-│       │       ├── models.py      (Modelos Django, no usados para persistencia)
-│       │       ├── views/         (Funciones vistas con @api_view)
+│       │       ├── models.py            # Modelos Django, no usados para persistencia
+│       │       ├── views/               # Funciones vistas con @api_view
 │       │       │   ├── biseccion.py
 │       │       │   ├── newton_raphson.py
 │       │       │   ├── taylor.py
@@ -737,11 +626,11 @@ Simulaci-n_Proyecto_Final/
 │       │       │   ├── cambios_base.py
 │       │       │   ├── error.py
 │       │       │   ├── derivada.py
-│       │       │   ├── export.py  (Exportacion Excel)
+│       │       │   ├── export.py        # Exportación Excel
 │       │       │   └── api_root.py
-│       │       ├── serializers/   (Validacion de entrada, no usada)
-│       │       ├── services/      (Logica numerica)
-│       │       │   ├── evaluador.py              (Parsing y evaluacion con SymPy)
+│       │       ├── serializers/         # Validación de entrada
+│       │       ├── services/            # Lógica numérica
+│       │       │   ├── evaluador.py     # Parsing y evaluación con SymPy
 │       │       │   ├── biseccion.py
 │       │       │   ├── newton_raphson.py
 │       │       │   ├── polinomio.py
@@ -749,18 +638,18 @@ Simulaci-n_Proyecto_Final/
 │       │       │   ├── diferencias_divididas.py
 │       │       │   ├── ajuste_curvas.py
 │       │       │   ├── cambios_base.py
-│       │       │   ├── metodo_numerico.py       (Clase base)
+│       │       │   ├── metodo_numerico.py   # Clase base
 │       │       │   └── __init__.py
-│       │       └── migrations/    (Django migrations, sin modelos persistentes)
+│       │       └── migrations/          # Django migrations
 │       ├── Dockerfile
-│       ├── requirements.txt       (Dependencias Python)
-│       ├── entrypoint.sh         (Script de inicio con migraciones)
+│       ├── requirements.txt             # Dependencias Python
+│       ├── entrypoint.sh                # Script de inicio con migraciones
 │       └── manage.py
 ├── frontend/
 │   ├── index.html
 │   ├── css/
 │   │   └── style.css
-│   ├── pages/               (Paginas HTML para cada metodo)
+│   ├── pages/                           # Páginas HTML para cada método
 │   │   ├── biseccion.html
 │   │   ├── newton.html
 │   │   ├── taylor.html
@@ -769,113 +658,182 @@ Simulaci-n_Proyecto_Final/
 │   │   ├── ajuste_curvas.html
 │   │   └── ...
 │   ├── Dockerfile
-│   └── nginx.conf           (Configuracion de servidor web)
-├── docker-compose.yml       (Orquestacion: PostgreSQL, Django, Nginx, Frontend)
-├── Readme.txt              (Este archivo)
-└── .env                    (Variables de entorno)
+│   └── nginx.conf                       # Configuración de servidor web
+├── docker-compose.yml                   # Orquestación de servicios
+├── Readme.md                            # Este archivo
+└── .env                                 # Variables de entorno
+```
 
-INSTALACION Y EJECUCION
+---
 
-Prerequisitos:
+## Instalación y Ejecución
+
+### Prerequisitos
+
 - Docker y Docker Compose instalados
 - Puerto 80 (frontend) y 8000 (backend) disponibles
 
-Pasos:
-1. Navegar al directorio del proyecto:
-   cd "C:\Users\ASUS\Documents\UNIprogramacion\Web devoloping\Proyecto_Final_Simulacion\Simulaci-n_Proyecto_Final"
+### Pasos de Instalación
 
-2. Construir e iniciar contenedores:
-   docker compose up --build -d
+**1. Navegar al directorio del proyecto:**
 
-3. Esperar a que inicie (90-120 segundos)
+```bash
+cd "C:\Users\ASUS\Documents\UNIprogramacion\Web devoloping\Proyecto_Final_Simulacion\Simulaci-n_Proyecto_Final"
+```
 
-4. Acceder a la aplicacion:
-   - Frontend: http://localhost/
-   - API Swagger: http://localhost:8000/api/docs/
-   - API ReDoc: http://localhost:8000/api/redoc/
+**2. Construir e iniciar contenedores:**
 
-5. Detener la aplicacion:
-   docker compose down
+```bash
+docker compose up --build -d
+```
 
-USO
+**3. Esperar a que inicie (90-120 segundos)**
 
-1. Mediante Frontend (HTML):
-   - Navegar a http://localhost/
-   - Seleccionar un metodo
-   - Ingresar parametros (expresion, intervalo, puntos, etc.)
-   - Visualizar resultados y graficas
-   - Descargar Excel con datos
+**4. Acceder a la aplicación:**
 
-2. Mediante API REST (Postman):
-   - POST http://localhost:8000/api/calculos/biseccion/
-   - Headers: Content-Type: application/json
-   - Body: {"expresion": "x**2 - 2", "a_inicial": 0, "b_inicial": 2}
-   - Respuesta: {"raiz": 1.414..., "iteraciones": [...], "grafica_png": "base64..."}
+- **Frontend**: http://localhost/
+- **API Swagger**: http://localhost:8000/api/docs/
+- **API ReDoc**: http://localhost:8000/api/redoc/
 
-3. Mediante Scripts en Postman:
-   - Pestaña "Scripts" → "Post-response"
-   - Visualizar graficas directamente en Postman
-   - Exportar datos a Excel
+**5. Detener la aplicación:**
 
-DEPENDENCIAS PRINCIPALES
+```bash
+docker compose down
+```
 
-Backend:
-- Django 4.2.13: Framework web
-- djangorestframework 3.14.0: API REST
-- drf-spectacular 0.27.0: Documentacion Swagger
-- SymPy 1.12: Algebra simbolica y calculo de derivadas
-- NumPy 1.24.3: Operaciones numericas
-- Pandas 2.0.3: Manejo de datos tabulares
-- Matplotlib 3.7.2: Generacion de graficas
-- openpyxl 3.1.2: Creacion de archivos Excel
-- psycopg2-binary 2.9.9: Driver PostgreSQL
-- gunicorn 21.2.0: Servidor WSGI
+---
 
-Frontend:
+## Uso
+
+### 1. Mediante Frontend (HTML)
+
+1. Navegar a http://localhost/
+2. Seleccionar un método
+3. Ingresar parámetros (expresión, intervalo, puntos, etc.)
+4. Visualizar resultados y gráficas
+5. Descargar Excel con datos
+
+### 2. Mediante API REST (Postman)
+
+**Endpoint:**
+
+```
+POST http://localhost:8000/api/calculos/biseccion/
+```
+
+**Headers:**
+
+```
+Content-Type: application/json
+```
+
+**Body:**
+
+```json
+{
+  "expresion": "x**2 - 2",
+  "a_inicial": 0,
+  "b_inicial": 2
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "raiz": 1.414...,
+  "iteraciones": [...],
+  "grafica_png": "base64..."
+}
+```
+
+### 3. Mediante Scripts en Postman
+
+- Pestaña "Scripts" → "Post-response"
+- Visualizar gráficas directamente en Postman
+- Exportar datos a Excel
+
+---
+
+## Dependencias Principales
+
+### Backend
+
+| Dependencia | Versión | Descripción |
+|------------|---------|------------|
+| Django | 4.2.13 | Framework web |
+| djangorestframework | 3.14.0 | API REST |
+| drf-spectacular | 0.27.0 | Documentación Swagger |
+| SymPy | 1.12 | Álgebra simbólica y cálculo de derivadas |
+| NumPy | 1.24.3 | Operaciones numéricas |
+| Pandas | 2.0.3 | Manejo de datos tabulares |
+| Matplotlib | 3.7.2 | Generación de gráficas |
+| openpyxl | 3.1.2 | Creación de archivos Excel |
+| psycopg2-binary | 2.9.9 | Driver PostgreSQL |
+| gunicorn | 21.2.0 | Servidor WSGI |
+
+### Frontend
+
 - HTML5 + CSS3 + JavaScript Vanilla
-- Nginx para servir archivos estaticos
+- Nginx para servir archivos estáticos
 
-NOTAS ACADEMICAS
+---
 
-Metodos Numericos Implementados vs Metodos Analíticos:
-- Los metodos numericos aproximan soluciones que pueden no existir en forma cerrada
+## Notas Académicas
+
+### Métodos Numéricos vs Métodos Analíticos
+
+- Los métodos numéricos aproximan soluciones que pueden no existir en forma cerrada
 - Permiten resolver problemas complejos que son intratables analíticamente
-- El analisis de convergencia asegura que los resultados sean confiables
-- El manejo de errores es fundamental en computacion numerica
+- El análisis de convergencia asegura que los resultados sean confiables
+- El manejo de errores es fundamental en computación numérica
 
-Precision Numerica:
-- Tolerancia predeterminada: 0.0001 (ajustable por usuario)
-- Precision de flotante: 15-17 dígitos significativos (IEEE 754)
-- Redondeo mostrado a 6 decimales en interfaz
+### Precisión Numérica
 
-Estabilidad Numerica:
-- Biseccion: siempre estable, convergencia garantizada
-- Newton: convergencia rapida pero puede divergir
-- Lagrange: susceptible al fenomeno de Runge
-- Diferencias divididas: mas estable que Lagrange
+- **Tolerancia predeterminada**: 0.0001 (ajustable por usuario)
+- **Precisión de flotante**: 15-17 dígitos significativos (IEEE 754)
+- **Redondeo mostrado**: 6 decimales en interfaz
 
-DIFICULTADES PREVISTAS Y SOLUCIONADAS
+### Estabilidad Numérica
 
-1. Distribucion en directorios separados:
-   - Resuelto: /views/ y /serializers/ separados por componente
+| Método | Estabilidad | Notas |
+|--------|------------|-------|
+| **Bisección** | Siempre estable | Convergencia garantizada |
+| **Newton** | Convergencia rápida | Puede divergir |
+| **Lagrange** | Susceptible | Fenómeno de Runge |
+| **Diferencias Divididas** | Más estable | Que Lagrange |
 
-2. Generacion de graficas sin almacenamiento en BD:
-   - Resuelto: codificacion en base64, transmision en respuesta JSON
+---
 
-3. Exportacion de Excel sin persistencia:
-   - Resuelto: generacion en buffer, codificacion en base64
+## Dificultades Previstas y Solucionadas
 
-4. Evaluacion simbolica de expresiones:
-   - Resuelto: uso de SymPy para parsing y calculo de derivadas
+### 1. Distribución en Directorios Separados
+- **Solución**: `/views/` y `/serializers/` separados por componente
 
-5. Multiples metodos en una sola API:
-   - Resuelto: endpoints separados por metodo, logica compartida en /services/
+### 2. Generación de Gráficas sin Almacenamiento en BD
+- **Solución**: Codificación en base64, transmisión en respuesta JSON
 
-CONCLUSIONES
+### 3. Exportación de Excel sin Persistencia
+- **Solución**: Generación en buffer, codificación en base64
 
-Esta aplicacion demuestra la implementacion practica de metodos numericos 
-fundamentales en analisis numerico. La arquitectura separa claramente la 
-logica de negocio (servicios numericos), la presentacion (API REST), y la 
-interfaz de usuario (frontend HTML). El uso de Docker asegura portabilidad 
-y reproducibilidad del entorno. La documentacion interactiva (Swagger) 
-facilita la integracion y prueba de la API.
+### 4. Evaluación Simbólica de Expresiones
+- **Solución**: Uso de SymPy para parsing y cálculo de derivadas
+
+### 5. Múltiples Métodos en una Sola API
+- **Solución**: Endpoints separados por método, lógica compartida en `/services/`
+
+---
+
+## Conclusiones
+
+Esta aplicación demuestra la implementación práctica de métodos numéricos fundamentales en análisis numérico. 
+
+**Puntos clave:**
+
+- **Arquitectura**: Separa claramente la lógica de negocio (servicios numéricos), la presentación (API REST), y la interfaz de usuario (frontend HTML)
+- **Portabilidad**: Docker asegura reproducibilidad del entorno
+- **Documentación**: Swagger facilita la integración y prueba de la API
+- **Escalabilidad**: Diseño modular permite agregar nuevos métodos fácilmente
+- **Educativo**: Sirve como referencia de buenas prácticas en desarrollo numérico
+
+---
