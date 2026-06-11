@@ -1,5 +1,8 @@
 from evaluador import Evaluador
 import pandas as pd
+import io
+import base64
+import pandas as pd
 
 
 class MetodoNumerico:
@@ -21,6 +24,23 @@ class MetodoNumerico:
         ruta = f"{nombre_archivo}.xlsx"
         df.to_excel(ruta, index=False, engine='openpyxl')
         print(f"Archivo '{ruta}' generado exitosamente.")
+
+    def obtener_excel_base64(self):
+        """Genera el Excel en la memoria RAM y lo devuelve como string Base64 para el backend."""
+        if not self.historial:
+            return None
+            
+        df = pd.DataFrame(self.historial)
+        df = df.round(6)
+        
+        # Crear un archivo virtual en la memoria RAM
+        buffer = io.BytesIO()
+        df.to_excel(buffer, index=False, engine='openpyxl')
+        buffer.seek(0)
+        
+        # Convertir el archivo a texto Base64
+        excel_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+        return excel_base64
 
 
 

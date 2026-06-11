@@ -1,6 +1,8 @@
 from metodo_numerico import MetodoNumerico
 import numpy as np
 import matplotlib.pyplot as plt
+import io
+import base64
 
 class NewtonRaphson(MetodoNumerico):
     def ejecutar(self, x0: float):
@@ -83,4 +85,25 @@ class NewtonRaphson(MetodoNumerico):
         plt.savefig(ruta_imagen, bbox_inches='tight')
         plt.close()
         print(f"Gráfica guardada como {ruta_imagen}")
+
+    def obtener_grafica_base64(self):
+        if not self.historial: return ""
+        x_n = [it["x_n"] for it in self.historial]
+        y_n = [it["f_x_n"] for it in self.historial]
+        
+        x_min, x_max = min(x_n), max(x_n)
+        margen = 0.5
+        x_vals = np.linspace(x_min - margen, x_max + margen, 200) 
+        y_vals = [self.evaluador.evaluar(x) for x in x_vals]
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(x_vals, y_vals, color='blue')
+        plt.axhline(0, color='black', linewidth=0.5, linestyle='--')
+        plt.scatter(x_n, y_n, color="red", zorder=5)
+        
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        plt.close()
+        return base64.b64encode(buffer.read()).decode('utf-8')
 
