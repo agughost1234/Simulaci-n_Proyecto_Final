@@ -29,16 +29,12 @@ graph TD
 
 ```mermaid
 graph LR
-    FE["🖥️ Frontend<br/>HTML/CSS/JS<br/>Nginx:80"]
-    API["⚙️ Backend<br/>Django REST<br/>Gunicorn:8000"]
-    DB["🗄️ PostgreSQL<br/>Port 5432"]
+    FE["Frontend<br/>HTML/CSS/JS<br/>Nginx:80"]
+    API["Backend<br/>Django REST<br/>Gunicorn:8000"]
+    DB["PostgreSQL<br/>Port 5432"]
     
     FE -->|HTTP| API
     API -->|SQL| DB
-    
-    style FE fill:#e1f5ff
-    style API fill:#f3e5f5
-    style DB fill:#e8f5e9
 ```
 
 ### Stack Tecnológico
@@ -57,7 +53,7 @@ graph LR
 
 ## Métodos Matemáticos Implementados
 
-### 1️⃣ Método de Bisección
+### Método de Bisección
 
 **Propósito:** Encontrar una raíz real de $f(x) = 0$ en $[a, b]$
 
@@ -85,7 +81,7 @@ $$E_{\text{rel}} = \frac{|x_{n+1} - x_n|}{|x_{n+1}|} < \varepsilon$$
 
 ---
 
-### 2️⃣ Método de Newton-Raphson
+### Método de Newton-Raphson
 
 **Propósito:** Encontrar raíces con convergencia cuadrática
 
@@ -125,18 +121,11 @@ graph TD
     C --> C1["Convergencia Cuadrática"]
     C --> C2["Puede divergir"]
     C --> C3["Requiere derivada"]
-    
-    style B1 fill:#fff3e0
-    style B2 fill:#c8e6c9
-    style B3 fill:#bbdefb
-    style C1 fill:#f3e5f5
-    style C2 fill:#ffcdd2
-    style C3 fill:#ffe0b2
 ```
 
 ---
 
-### 3️⃣ Polinomio de Taylor
+### Polinomio de Taylor
 
 **Propósito:** Aproximar $f(x)$ mediante un polinomio de grado $n$ alrededor del punto $c$
 
@@ -162,7 +151,7 @@ donde $M_{n+1}$ es una cota de $|f^{(n+1)}(t)|$ en el intervalo.
 
 ---
 
-### 4️⃣ Interpolación de Lagrange
+### Interpolación de Lagrange
 
 **Propósito:** Encontrar polinomio que pasa por puntos $(x_i, y_i)$
 
@@ -185,7 +174,7 @@ $$L_i(x) = \prod_{j=0, j \neq i}^{n-1} \frac{x - x_j}{x_i - x_j}$$
 
 ---
 
-### 5️⃣ Diferencias Divididas de Newton
+### Diferencias Divididas de Newton
 
 **Propósito:** Interpolación con actualizaciones incrementales
 
@@ -211,7 +200,7 @@ x_2 & y_2 & \cdots & \\
 
 ---
 
-### 6️⃣ Ajuste de Curvas por Mínimos Cuadrados
+### Ajuste de Curvas por Mínimos Cuadrados
 
 **Propósito:** Encontrar la curva que mejor aproxima puntos dispersos
 
@@ -247,7 +236,7 @@ Se resuelve como regresión lineal en escala log.
 
 ---
 
-### 7️⃣ Cálculos Auxiliares
+### Cálculos Auxiliares
 
 #### Cálculo de Errores
 
@@ -486,11 +475,6 @@ graph TD
     C --> C1["Inestable si f'≈0<br/>Puede divergir"]
     D --> D1["Fenómeno Runge<br/>Susceptible a errores"]
     E --> E1["Más estable<br/>Que Lagrange"]
-    
-    style B1 fill:#c8e6c9
-    style C1 fill:#ffcdd2
-    style D1 fill:#ffe0b2
-    style E1 fill:#bbdefb
 ```
 
 ### Precisión Numérica
