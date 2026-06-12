@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Diferencias Divididas · Simulación Numérica</title>
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/resultados.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="../js/api-client.js"></script>
+  <script src="../js/form-handlers.js"></script>
 </head>
 <body>
 <div class="progress-bar" id="progressBar"></div>
@@ -105,56 +108,46 @@
       <div class="content-section">
         <div class="content-section-header"><div class="section-icon"><i class="fas fa-flask"></i></div><h2>Simulador — Diferencias Divididas</h2></div>
         <div class="content-section-body">
-          <!-- AQUÍ SE IMPLEMENTARÁ LA LÓGICA DEL SIMULADOR EN JAVASCRIPT -->
-          <div class="simulator-grid">
-            <div>
-              <div class="form-group">
-                <label class="form-label">Puntos (x, y) — un par por línea</label>
-                <textarea class="form-input textarea-points" id="ddPuntos" placeholder="1.0, 0.7651977&#10;1.3, 0.6200860&#10;1.6, 0.4554022&#10;1.9, 0.2818186&#10;2.2, 0.1103623"></textarea>
-                <div class="form-hint">Formato: x, y (un punto por fila)</div>
+          <form id="forma-diferencias-divididas">
+            <div class="simulator-grid">
+              <div>
+                <div class="form-group">
+                  <label class="form-label">Puntos de interpolación (x, y)</label>
+                  <div class="form-hint" style="margin-bottom: 1rem;">Mínimo 2 puntos requeridos</div>
+                  <table id="puntos-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                      <tr>
+                        <th style="border-bottom: 2px solid #ccc; padding: 0.5rem; text-align: left;">x</th>
+                        <th style="border-bottom: 2px solid #ccc; padding: 0.5rem; text-align: left;">y</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="1.0" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="0.7651977" required></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="1.3" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="0.6200860" required></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="1.6" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="0.4554022" required></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-            <div>
-              <div class="form-group">
-                <label class="form-label">Punto a interpolar (x*)</label>
-                <input type="number" class="form-input" placeholder="Ej: 1.5" step="any" id="ddXstar">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Mostrar tabla de diferencias</label>
-                <select class="form-select">
-                  <option value="si">Sí — tabla completa</option>
-                  <option value="no">No — solo coeficientes</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Grado del polinomio (n)</label>
-                <input type="number" class="form-input" placeholder="Usar todos los puntos" min="1" max="14">
-                <div class="form-hint">Vacío = usar n = número de puntos − 1</div>
-              </div>
+            <div class="btn-row">
+              <button type="submit" class="btn-primary"><i class="fas fa-play"></i> Interpolar</button>
+              <button type="reset" class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
             </div>
-          </div>
-          <div class="btn-row">
-            <button class="btn-primary" onclick="alert('Lógica pendiente de implementación JS')"><i class="fas fa-play"></i> Interpolar</button>
-            <button class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
-          </div>
+          </form>
         </div>
       </div>
 
-      <div class="content-section">
-        <div class="content-section-header"><div class="section-icon"><i class="fas fa-chart-bar"></i></div><h2>Resultados</h2></div>
-        <div class="content-section-body" style="padding:0;">
-          <div class="results-panel" style="border:none;border-radius:0;">
-            <div class="results-header"><div class="results-dot"></div>SALIDA · DIFERENCIAS DIVIDIDAS</div>
-            <div class="results-body">
-              <div class="results-placeholder">
-                <div class="placeholder-icon"><i class="fas fa-table"></i></div>
-                <!-- AQUÍ SE MOSTRARÁ LA TABLA DE DIFERENCIAS DIVIDIDAS Y EL POLINOMIO -->
-                <p>La tabla de diferencias divididas y el polinomio P(x) aparecerán aquí<br>cuando se implemente la lógica del algoritmo.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="resultados-container"></div>
     </main>
     <footer class="page-footer">
       <span class="footer-text">Simulación Numérica · Método 07 — Diferencias Divididas</span>

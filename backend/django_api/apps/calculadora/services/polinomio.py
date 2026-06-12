@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import io
 import base64
+import math
 from sympy import symbols, expand, series, diff
 from .metodo_numerico import MetodoNumerico
 
@@ -32,35 +33,35 @@ class Polinomio(MetodoNumerico):
             # Obtener la serie de Taylor
             x = symbols('x')
             serie_taylor = series(
-                self.evaluador.f, 
+                self.evaluador.expresion, 
                 (x, centro), 
                 n=grado + 1
             ).removeO()
             
             # Evaluar en el punto
             valor_exacto = float(self.evaluador.evaluar(punto_eval))
-            valor_taylor = float(serie_taylor.subs(x, punto_eval))
-            error = abs(valor_exacto - valor_taylor)
+            aproximacion = float(serie_taylor.subs(x, punto_eval))
+            error = abs(valor_exacto - aproximacion)
             
-            # Generar historial con derivadas
+            # Generar historial con estructura compatible con frontend
             self.historial = []
+            aprox_acumulada = 0
             for i in range(grado + 1):
-                derivada = diff(self.evaluador.f, x, i)
-                valor_derivada = float(derivada.subs(x, centro))
-                coef = valor_derivada / (1 if i == 0 else np.prod([j for j in range(1, i + 1)]))
+                derivada = diff(self.evaluador.expresion, x, i)
+                derivada_en_centro = float(derivada.subs(x, centro))
+                termino_k = (derivada_en_centro / math.factorial(i)) * ((punto_eval - centro) ** i)
+                aprox_acumulada += termino_k
                 
                 self.historial.append({
-                    'orden': i,
-                    'coeficiente': coef,
-                    'derivada_en_centro': valor_derivada,
+                    'orden_k': i,
+                    'derivada_en_x0': derivada_en_centro,
+                    'termino_k': termino_k,
+                    'aproximacion_acumulada': aprox_acumulada,
                 })
             
             respuesta = {
-                "centro": centro,
-                "grado": grado,
-                "punto_evaluacion": punto_eval,
+                "aproximacion": aproximacion,
                 "valor_exacto": valor_exacto,
-                "valor_taylor": valor_taylor,
                 "error": error,
                 "polinomio": str(serie_taylor),
                 "historial": self.historial,
@@ -68,15 +69,16 @@ class Polinomio(MetodoNumerico):
             }
             
             # Generar gráfica
-            self._generar_grafica(punto_eval, centro, grado, valor_exacto, valor_taylor)
+            self._generar_grafica(punto_eval, centro, grado, valor_exacto, aproximacion)
             
             return respuesta
             
         except Exception as e:
             return {"error": str(e)}
     
-    def _generar_grafica(self, punto_eval, centro, grado, valor_exacto, valor_taylor):
+    def _generar_grafica(self, punto_eval, centro, grado, valor_exacto, aproximacion):
         """Genera gráfica de la aproximación de Taylor."""
+        print(f"DEBUG -> punto_eval={punto_eval}, valor_exacto={valor_exacto}, aproximacion={aproximacion}, tipo={type(aproximacion)}")
         try:
             fig, ax = plt.subplots(figsize=(10, 6))
             
@@ -89,7 +91,7 @@ class Polinomio(MetodoNumerico):
             
             # Puntos de evaluación
             ax.plot(punto_eval, valor_exacto, 'ro', markersize=8, label=f'f({punto_eval}) = {valor_exacto:.6f}')
-            ax.plot(punto_eval, valor_taylor, 'g^', markersize=8, label=f'Taylor({punto_eval}) = {valor_taylor:.6f}')
+            ax.plot(punto_eval, aproximacion, 'g^', markersize=8, label=f'Taylor({punto_eval}) = {aproximacion:.6f}')
             ax.plot(centro, self.evaluador.evaluar(centro), 'k*', markersize=12, label=f'Centro ({centro})')
             
             ax.set_xlabel('x')

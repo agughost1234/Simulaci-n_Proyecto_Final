@@ -19,6 +19,7 @@ from apps.calculadora.views import (
     lagrange_calcular,
     diferencias_divididas_calcular,
     ajuste_curvas_calcular,
+    newton_sistemas_calcular,
     exportar_excel,
     exportar_multiplos_excel,
 )
@@ -40,6 +41,7 @@ urlpatterns = [
     path('api/calculos/interpolacion-lagrange/', lagrange_calcular, name='lagrange'),
     path('api/calculos/diferencias-divididas/', diferencias_divididas_calcular, name='diferencias-divididas'),
     path('api/calculos/ajuste-curvas/', ajuste_curvas_calcular, name='ajuste-curvas'),
+    path('api/calculos/newton-sistemas/', newton_sistemas_calcular, name='newton-sistemas'),
     
     # Exportar datos
     path('api/exportar/excel/', exportar_excel, name='exportar-excel'),

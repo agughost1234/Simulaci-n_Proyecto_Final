@@ -43,10 +43,17 @@ def diferencias_divididas_calcular(request):
         if 'error' in resultado:
             return Response(resultado, status=status.HTTP_400_BAD_REQUEST)
         
-        # Agregar gráfica en base64
-        resultado['grafica_png'] = metodo.grafica_base64
+        # Transformar respuesta para que sea compatible con frontend
+        puntos = [{'x': float(x), 'y': float(y)} for x, y in zip(resultado.get('puntos_x', []), resultado.get('puntos_y', []))]
+        resultado_transformado = {
+            'polinomio': resultado.get('polinomio', 'Polinomio de Diferencias Divididas'),
+            'puntos': puntos,
+            'grafica_png': metodo.grafica_base64,
+            'historial': resultado.get('historial', []),
+            'estado': resultado.get('estado', 'exito')
+        }
         
-        return Response(resultado, status=status.HTTP_200_OK)
+        return Response(resultado_transformado, status=status.HTTP_200_OK)
         
     except ValueError as e:
         logger.error(f"ValueError en Diferencias Divididas: {str(e)}")

@@ -9,6 +9,7 @@ from .taylor import polinomio_taylor_calcular
 from .interpolacion_lagrange import lagrange_calcular
 from .diferencias_divididas import diferencias_divididas_calcular
 from .ajuste_curvas import ajuste_curvas_calcular
+from .newton_sistemas import newton_sistemas_calcular
 from .export import exportar_excel, exportar_multiplos_excel
 
 __all__ = [
@@ -22,6 +23,7 @@ __all__ = [
     'lagrange_calcular',
     'diferencias_divididas_calcular',
     'ajuste_curvas_calcular',
+    'newton_sistemas_calcular',
     'exportar_excel',
     'exportar_multiplos_excel',
 ]

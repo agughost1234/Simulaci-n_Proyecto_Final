@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lagrange · Simulación Numérica</title>
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/resultados.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="../js/api-client.js"></script>
+  <script src="../js/form-handlers.js"></script>
 </head>
 <body>
 <div class="progress-bar" id="progressBar"></div>
@@ -106,62 +109,46 @@
       <div class="content-section">
         <div class="content-section-header"><div class="section-icon"><i class="fas fa-flask"></i></div><h2>Simulador — Interpolación de Lagrange</h2></div>
         <div class="content-section-body">
-          <!-- AQUÍ SE IMPLEMENTARÁ LA LÓGICA DEL SIMULADOR EN JAVASCRIPT -->
-          <div class="simulator-grid">
-            <div>
-              <div class="form-group">
-                <label class="form-label">Número de puntos (n+1)</label>
-                <input type="number" class="form-input" placeholder="Ej: 4" min="2" max="15" id="lagN" value="4">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Puntos (x, y) — un par por línea</label>
-                <textarea class="form-input textarea-points" id="lagPuntos" placeholder="0, 1&#10;1, 2.718&#10;2, 7.389&#10;3, 20.086"></textarea>
-                <div class="form-hint">Formato: x, y (un punto por fila)</div>
-              </div>
-            </div>
-            <div>
-              <div class="form-group">
-                <label class="form-label">Punto a interpolar (x*)</label>
-                <input type="number" class="form-input" placeholder="Ej: 1.5" step="any" id="lagXstar">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Mostrar polinomios base Lᵢ(x)</label>
-                <select class="form-select">
-                  <option value="si">Sí — mostrar cada Lᵢ(x)</option>
-                  <option value="no">No — solo resultado final</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Expandir el polinomio P(x)</label>
-                <select class="form-select">
-                  <option value="si">Sí — forma expandida</option>
-                  <option value="no">No — forma de Lagrange</option>
-                </select>
+          <form id="forma-lagrange">
+            <div class="simulator-grid">
+              <div>
+                <div class="form-group">
+                  <label class="form-label">Puntos de interpolación (x, y)</label>
+                  <div class="form-hint" style="margin-bottom: 1rem;">Mínimo 2 puntos requeridos</div>
+                  <table id="puntos-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                      <tr>
+                        <th style="border-bottom: 2px solid #ccc; padding: 0.5rem; text-align: left;">x</th>
+                        <th style="border-bottom: 2px solid #ccc; padding: 0.5rem; text-align: left;">y</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="0" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="1" required></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="1" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="2" required></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="2" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="5" required></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="btn-row">
-            <button class="btn-primary" onclick="alert('Lógica pendiente de implementación JS')"><i class="fas fa-play"></i> Interpolar</button>
-            <button class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
-          </div>
+            <div class="btn-row">
+              <button type="submit" class="btn-primary"><i class="fas fa-play"></i> Interpolar</button>
+              <button type="reset" class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
+            </div>
+          </form>
         </div>
       </div>
 
-      <div class="content-section">
-        <div class="content-section-header"><div class="section-icon"><i class="fas fa-chart-bar"></i></div><h2>Resultados</h2></div>
-        <div class="content-section-body" style="padding:0;">
-          <div class="results-panel" style="border:none;border-radius:0;">
-            <div class="results-header"><div class="results-dot"></div>SALIDA · LAGRANGE</div>
-            <div class="results-body">
-              <div class="results-placeholder">
-                <div class="placeholder-icon"><i class="fas fa-bezier-curve"></i></div>
-                <!-- AQUÍ SE MOSTRARÁ EL POLINOMIO P(x) Y EL VALOR INTERPOLADO -->
-                <p>El polinomio P(x) y el valor interpolado en x* aparecerán aquí<br>cuando se implemente la lógica del algoritmo.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="resultados-container"></div>
     </main>
     <footer class="page-footer">
       <span class="footer-text">Simulación Numérica · Método 06 — Lagrange</span>

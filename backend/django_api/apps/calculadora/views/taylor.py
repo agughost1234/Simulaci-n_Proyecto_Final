@@ -39,11 +39,10 @@ def polinomio_taylor_calcular(request):
         metodo = Polinomio(evaluador)
         resultado = metodo.ejecutar(centro, grado, punto_eval)
         
-        if 'error' in resultado:
-            return Response(resultado, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Agregar gráfica en base64
+        # Agregar gráfica en base64 y polinomio
         resultado['grafica_png'] = metodo.grafica_base64
+        resultado['polinomio'] = resultado.get('polinomio', 'Polinomio de Taylor')
+        resultado['success'] = True
         
         return Response(resultado, status=status.HTTP_200_OK)
         

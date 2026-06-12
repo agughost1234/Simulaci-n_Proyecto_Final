@@ -44,10 +44,18 @@ def ajuste_curvas_calcular(request):
         if 'error' in resultado:
             return Response(resultado, status=status.HTTP_400_BAD_REQUEST)
         
-        # Agregar gráfica en base64
-        resultado['grafica_png'] = metodo.grafica_base64
+        # Transformar respuesta para que sea compatible con frontend
+        puntos = [{'x': float(x), 'y': float(y)} for x, y in zip(resultado.get('puntos_x', []), resultado.get('puntos_y', []))]
+        resultado_transformado = {
+            'polinomio': resultado.get('ecuacion', f'Ajuste de grado {grado}'),
+            'puntos': puntos,
+            'grafica_png': metodo.grafica_base64,
+            'historial': resultado.get('historial', []),
+            'estado': resultado.get('estado', 'exito'),
+            'r_cuadrado': resultado.get('r_cuadrado', 0)
+        }
         
-        return Response(resultado, status=status.HTTP_200_OK)
+        return Response(resultado_transformado, status=status.HTTP_200_OK)
         
     except ValueError as e:
         logger.error(f"ValueError en Ajuste de Curvas: {str(e)}")

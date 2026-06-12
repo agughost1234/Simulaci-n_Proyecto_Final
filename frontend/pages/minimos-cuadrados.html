@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mínimos Cuadrados · Simulación Numérica</title>
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/resultados.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="../js/api-client.js"></script>
+  <script src="../js/form-handlers.js"></script>
 </head>
 <body>
 <div class="progress-bar" id="progressBar"></div>
@@ -122,60 +125,57 @@
       <div class="content-section">
         <div class="content-section-header"><div class="section-icon"><i class="fas fa-flask"></i></div><h2>Simulador — Mínimos Cuadrados</h2></div>
         <div class="content-section-body">
-          <!-- AQUÍ SE IMPLEMENTARÁ LA LÓGICA DEL SIMULADOR EN JAVASCRIPT -->
-          <div class="simulator-grid">
-            <div>
-              <div class="form-group">
-                <label class="form-label">Datos (x, y) — un par por línea</label>
-                <textarea class="form-input textarea-points" id="mcDatos" placeholder="1, 0.5&#10;2, 2.5&#10;3, 2.0&#10;4, 4.0&#10;5, 3.5&#10;6, 6.0&#10;7, 5.5"></textarea>
-                <div class="form-hint">Formato: x, y (un punto por fila)</div>
+          <form id="forma-minimos-cuadrados">
+            <div class="simulator-grid">
+              <div>
+                <div class="form-group">
+                  <label class="form-label">Datos (x, y)</label>
+                  <div class="form-hint" style="margin-bottom: 1rem;">Mínimo 2 puntos requeridos</div>
+                  <table id="puntos-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                      <tr>
+                        <th style="border-bottom: 2px solid #ccc; padding: 0.5rem; text-align: left;">x</th>
+                        <th style="border-bottom: 2px solid #ccc; padding: 0.5rem; text-align: left;">y</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="1" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="0.5" required></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="2" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="2.5" required></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="3" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="2.0" required></td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="4" required></td>
+                        <td style="padding: 0.5rem;"><input type="number" class="form-input punto-input" step="any" placeholder="4.0" required></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <div class="form-group">
+                  <label class="form-label">Grado del polinomio</label>
+                  <input type="number" class="form-input" id="grado" value="1" min="1" max="8" required>
+                  <div class="form-hint">1 = Lineal, 2 = Cuadrático, 3 = Cúbico, etc.</div>
+                </div>
               </div>
             </div>
-            <div>
-              <div class="form-group">
-                <label class="form-label">Tipo de modelo</label>
-                <select class="form-select" id="mcModelo">
-                  <option value="lineal">Lineal: y = a₀ + a₁x</option>
-                  <option value="cuadratico">Cuadrático: y = a₀ + a₁x + a₂x²</option>
-                  <option value="cubico">Cúbico: y = a₀ + a₁x + a₂x² + a₃x³</option>
-                  <option value="exponencial">Exponencial: y = ae^(bx)</option>
-                  <option value="potencial">Potencial: y = axᵇ</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Grado del polinomio (si aplica)</label>
-                <input type="number" class="form-input" value="1" min="1" max="8">
-                <div class="form-hint">Para modelos polinómicos de grado personalizado</div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Valor a predecir (x*)</label>
-                <input type="number" class="form-input" placeholder="Ej: 4.5" step="any">
-                <div class="form-hint">Opcional — evalúa el modelo ajustado en x*</div>
-              </div>
+            <div class="btn-row">
+              <button type="submit" class="btn-primary"><i class="fas fa-play"></i> Ajustar Curva</button>
+              <button type="reset" class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
             </div>
-          </div>
-          <div class="btn-row">
-            <button class="btn-primary" onclick="alert('Lógica pendiente de implementación JS')"><i class="fas fa-play"></i> Ajustar Curva</button>
-            <button class="btn-secondary"><i class="fas fa-rotate-left"></i> Limpiar</button>
-          </div>
+          </form>
         </div>
       </div>
 
-      <div class="content-section">
-        <div class="content-section-header"><div class="section-icon"><i class="fas fa-chart-bar"></i></div><h2>Resultados</h2></div>
-        <div class="content-section-body" style="padding:0;">
-          <div class="results-panel" style="border:none;border-radius:0;">
-            <div class="results-header"><div class="results-dot"></div>SALIDA · MÍNIMOS CUADRADOS</div>
-            <div class="results-body">
-              <div class="results-placeholder">
-                <div class="placeholder-icon"><i class="fas fa-scatter-chart"></i></div>
-                <!-- AQUÍ SE MOSTRARÁN LOS COEFICIENTES, R² Y LA GRÁFICA DE AJUSTE -->
-                <p>Los coeficientes del modelo, R² y la gráfica de ajuste aparecerán aquí<br>cuando se implemente la lógica del algoritmo.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="resultados-container"></div>
     </main>
 
     <footer class="page-footer">

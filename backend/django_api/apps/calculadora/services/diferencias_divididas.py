@@ -60,6 +60,7 @@ class DiferenciasNivel(MetodoNumerico):
                 })
             
             respuesta = {
+                "polinomio": f"Polinomio de Newton (Diferencias Divididas) de grado {n - 1}",
                 "puntos_x": puntos_x.tolist(),
                 "puntos_y": puntos_y.tolist(),
                 "x_evaluacion": x_eval,

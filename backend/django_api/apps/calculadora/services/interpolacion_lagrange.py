@@ -51,6 +51,7 @@ class InterpolacionLagrange(MetodoNumerico):
                 })
             
             respuesta = {
+                "polinomio": f"Polinomio de Lagrange de grado {n - 1}",
                 "puntos_x": puntos_x.tolist(),
                 "puntos_y": puntos_y.tolist(),
                 "x_evaluacion": x_eval,
